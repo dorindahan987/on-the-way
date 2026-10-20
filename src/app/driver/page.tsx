@@ -87,14 +87,14 @@ export default function DriverFeedPage() {
             {verifySent ? (
               <div className="text-center py-6">
                 <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
-                  style={{ background: "#ccf02a" }}>
+                  style={{ background: "#c9f45a" }}>
                   <CheckCircle2 className="w-8 h-8 text-black" />
                 </div>
                 <p className="font-black text-zinc-900 text-lg mb-2">הבקשה נשלחה!</p>
                 <p className="text-zinc-500 text-sm">נבדוק את המסמכים ונחזור תוך 24 שעות.</p>
                 <button onClick={() => { setShowVerify(false); setVerifySent(false); }}
                   className="mt-6 w-full h-12 font-black rounded-2xl text-black text-sm"
-                  style={{ background: "#ccf02a" }}>
+                  style={{ background: "#c9f45a" }}>
                   סגור
                 </button>
               </div>
@@ -109,7 +109,7 @@ export default function DriverFeedPage() {
                     { label: "רישיון נהיגה", sub: "בתוקף" },
                   ].map(doc => (
                     <label key={doc.label}
-                      className="flex items-center gap-4 p-4 rounded-2xl border-2 border-dashed border-zinc-200 hover:border-[#1d44f9]/40 cursor-pointer transition-colors">
+                      className="flex items-center gap-4 p-4 rounded-2xl border-2 border-dashed border-zinc-200 hover:border-[#4a6ffe]/40 cursor-pointer transition-colors">
                       <div className="w-10 h-10 rounded-xl bg-zinc-100 flex items-center justify-center shrink-0">
                         <Upload className="w-5 h-5 text-zinc-400" />
                       </div>
@@ -127,7 +127,7 @@ export default function DriverFeedPage() {
                     updateUser({ verified: false }); // stays false until admin approves
                   }}
                   className="w-full h-13 font-black rounded-2xl text-black text-sm py-3"
-                  style={{ background: "#ccf02a" }}>
+                  style={{ background: "#c9f45a" }}>
                   שלח לאימות
                 </button>
               </>
@@ -143,16 +143,16 @@ export default function DriverFeedPage() {
       </div>
 
       {/* ── Earnings banner ───────────────────── */}
-      <div className="rounded-3xl p-5 mb-4 overflow-hidden relative" style={{ background: "#1d44f9" }}>
-        <div className="absolute top-0 left-0 w-48 h-48 bg-[#ccf02a]/10 rounded-full blur-[60px] pointer-events-none" />
+      <div className="rounded-3xl p-5 mb-4 overflow-hidden relative" style={{ background: "#4a6ffe" }}>
+        <div className="absolute top-0 left-0 w-48 h-48 bg-[#c9f45a]/10 rounded-full blur-[60px] pointer-events-none" />
         <div className="relative flex items-center justify-between gap-4">
           <div>
             <p className="text-white/60 text-xs font-semibold mb-1 uppercase tracking-wide">ממוצע לכל הובלה</p>
             <p className="text-white font-black text-3xl leading-none">₪{avgBid}</p>
             <p className="text-white/60 text-xs mt-1.5">{feed.length} הובלות פתוחות · שלח הצעה ותרוויח</p>
           </div>
-          <div className="shrink-0 text-center bg-[#ccf02a]/15 border border-[#ccf02a]/20 rounded-2xl px-4 py-3">
-            <p className="text-[#ccf02a] font-black text-2xl leading-none">{feed.length}</p>
+          <div className="shrink-0 text-center bg-[#c9f45a]/15 border border-[#c9f45a]/20 rounded-2xl px-4 py-3">
+            <p className="text-[#c9f45a] font-black text-2xl leading-none">{feed.length}</p>
             <p className="text-white/50 text-[10px] mt-1">הובלות</p>
           </div>
         </div>
@@ -183,8 +183,8 @@ export default function DriverFeedPage() {
             className={cn(
               "shrink-0 text-sm font-bold px-4 py-2 rounded-2xl transition-all border",
               region === r
-                ? "bg-[#ccf02a] text-black border-[#ccf02a] shadow-md shadow-[#ccf02a]/20"
-                : "bg-white border-zinc-200 text-zinc-500 hover:border-[#ccf02a]/50 hover:text-[#1d44f9]"
+                ? "bg-[#c9f45a] text-black border-[#c9f45a] shadow-md shadow-[#c9f45a]/20"
+                : "bg-white border-zinc-200 text-zinc-500 hover:border-[#c9f45a]/50 hover:text-[#4a6ffe]"
             )}>
             {r}
           </button>
@@ -212,9 +212,9 @@ export default function DriverFeedPage() {
                 className={cn(
                   "bg-white rounded-3xl border overflow-hidden transition-all duration-200",
                   isOpen
-                    ? "border-[#ccf02a]/40 shadow-xl shadow-[#ccf02a]/5"
+                    ? "border-[#c9f45a]/40 shadow-xl shadow-[#c9f45a]/5"
                     : isSubmitted
-                    ? "border-[#ccf02a]/30 bg-[#ccf02a]/5"
+                    ? "border-[#c9f45a]/30 bg-[#c9f45a]/5"
                     : "border-zinc-100 hover:border-zinc-200 hover:shadow-lg"
                 )}>
 
@@ -269,7 +269,7 @@ export default function DriverFeedPage() {
                       </div>
 
                       {isSubmitted ? (
-                        <div className="flex items-center gap-1.5 text-xs font-black text-[#1d44f9] bg-[#ccf02a]/15 border border-[#ccf02a]/30 px-3 py-1.5 rounded-xl shrink-0">
+                        <div className="flex items-center gap-1.5 text-xs font-black text-[#4a6ffe] bg-[#c9f45a]/15 border border-[#c9f45a]/30 px-3 py-1.5 rounded-xl shrink-0">
                           <CheckCircle2 className="w-3.5 h-3.5" />
                           נשלחה
                         </div>
@@ -279,8 +279,8 @@ export default function DriverFeedPage() {
                           className={cn(
                             "flex items-center gap-1.5 text-sm font-bold px-4 py-2 rounded-2xl transition-all shrink-0",
                             isOpen
-                              ? "bg-[#ccf02a] text-black shadow-md shadow-[#ccf02a]/20"
-                              : "bg-[#ccf02a]/15 text-[#1d44f9] hover:bg-[#ccf02a]/25 border border-[#ccf02a]/30"
+                              ? "bg-[#c9f45a] text-black shadow-md shadow-[#c9f45a]/20"
+                              : "bg-[#c9f45a]/15 text-[#4a6ffe] hover:bg-[#c9f45a]/25 border border-[#c9f45a]/30"
                           )}>
                           <Send className="w-3.5 h-3.5" />
                           הצע מחיר
@@ -299,7 +299,7 @@ export default function DriverFeedPage() {
                     </div>
                     <div className="flex items-center gap-1 text-xs">
                       <span className="text-zinc-400">הצעות</span>
-                      <span className="font-black text-[#1d44f9]">₪{Math.round(budget * 0.85)}–{budget}</span>
+                      <span className="font-black text-[#4a6ffe]">₪{Math.round(budget * 0.85)}–{budget}</span>
                     </div>
                   </div>
                 )}
@@ -321,13 +321,13 @@ export default function DriverFeedPage() {
                         placeholder="כמה תיקח?"
                         value={bid.amount}
                         onChange={e => handleBidChange(s.id, "amount", e.target.value)}
-                        className="w-full h-16 bg-white border-2 border-zinc-200 rounded-2xl pr-10 pl-4 text-2xl font-black focus:outline-none focus:border-[#1d44f9] focus:ring-4 focus:ring-[#1d44f9]/10 transition-all placeholder:font-normal placeholder:text-lg placeholder:text-zinc-200"
+                        className="w-full h-16 bg-white border-2 border-zinc-200 rounded-2xl pr-10 pl-4 text-2xl font-black focus:outline-none focus:border-[#4a6ffe] focus:ring-4 focus:ring-[#4a6ffe]/10 transition-all placeholder:font-normal placeholder:text-lg placeholder:text-zinc-200"
                         autoFocus
                       />
                       {bid.amount && (
                         <div className="absolute left-4 top-1/2 -translate-y-1/2 text-xs text-zinc-400">
                           {Number(bid.amount) < budget
-                            ? <span className="text-[#1d44f9] font-bold">מתחת לממוצע — תחרותי!</span>
+                            ? <span className="text-[#4a6ffe] font-bold">מתחת לממוצע — תחרותי!</span>
                             : <span>מעל הממוצע</span>}
                         </div>
                       )}
@@ -340,7 +340,7 @@ export default function DriverFeedPage() {
                       value={bid.note}
                       onChange={e => handleBidChange(s.id, "note", e.target.value)}
                       dir="rtl"
-                      className="w-full h-12 bg-white border-2 border-zinc-200 rounded-2xl px-4 text-sm mb-4 focus:outline-none focus:border-[#1d44f9] focus:ring-4 focus:ring-[#1d44f9]/10 transition-all placeholder:text-zinc-300"
+                      className="w-full h-12 bg-white border-2 border-zinc-200 rounded-2xl px-4 text-sm mb-4 focus:outline-none focus:border-[#4a6ffe] focus:ring-4 focus:ring-[#4a6ffe]/10 transition-all placeholder:text-zinc-300"
                     />
 
                     <div className="flex gap-3">
@@ -352,7 +352,7 @@ export default function DriverFeedPage() {
                       <button
                         onClick={() => submitBid(s.id)}
                         disabled={!bid.amount}
-                        className="flex-1 h-12 bg-[#ccf02a] text-black font-black rounded-2xl text-sm hover:bg-[#b8d920] active:scale-[0.98] disabled:opacity-30 transition-all shadow-lg shadow-[#ccf02a]/25">
+                        className="flex-1 h-12 bg-[#c9f45a] text-black font-black rounded-2xl text-sm hover:bg-[#b5e048] active:scale-[0.98] disabled:opacity-30 transition-all shadow-lg shadow-[#c9f45a]/25">
                         {bid.amount ? `שלח הצעה — ₪${bid.amount}` : "שלח הצעת מחיר"}
                       </button>
                     </div>
@@ -361,12 +361,12 @@ export default function DriverFeedPage() {
 
                 {/* ── Post-submit state ─────── */}
                 {isSubmitted && (
-                  <div className="border-t border-[#ccf02a]/30 px-5 py-3 bg-[#ccf02a]/8 flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-xs text-[#1d44f9]">
+                  <div className="border-t border-[#c9f45a]/30 px-5 py-3 bg-[#c9f45a]/8 flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-xs text-[#4a6ffe]">
                       <CheckCircle2 className="w-4 h-4 shrink-0" />
                       <span>הצעתך <strong>₪{bids[s.id]?.amount}</strong> נשלחה · ממתין לתגובת הלקוח</span>
                     </div>
-                    <ChevronLeft className="w-4 h-4 text-[#ccf02a]" />
+                    <ChevronLeft className="w-4 h-4 text-[#c9f45a]" />
                   </div>
                 )}
               </div>

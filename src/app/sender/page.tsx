@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/auth";
 
 const STATUS_LABEL: Record<string, { label: string; color: string; icon: typeof Clock }> = {
-  open: { label: "פעיל — ממתין להצעות", color: "text-[#1d44f9] bg-[#ccf02a]/15 border-[#ccf02a]/30", icon: Loader2 },
+  open: { label: "פעיל — ממתין להצעות", color: "text-[#4a6ffe] bg-[#c9f45a]/15 border-[#c9f45a]/30", icon: Loader2 },
   locked: { label: "נעול — מוביל נבחר", color: "text-blue-600 bg-blue-50 border-blue-100", icon: CheckCircle2 },
   completed: { label: "הושלם", color: "text-zinc-500 bg-zinc-100 border-zinc-200", icon: CheckCircle2 },
 };
@@ -169,7 +169,7 @@ export default function SenderDashboard() {
       )}
 
       {/* How it works — first time guide */}
-      <div className="mt-8 rounded-3xl p-6" style={{ background: "#1d44f9" }}>
+      <div className="mt-8 rounded-3xl p-6" style={{ background: "#4a6ffe" }}>
         <p className="text-xs font-black text-white/40 uppercase tracking-widest mb-4">איך זה עובד?</p>
         <div className="space-y-4">
           {[
@@ -180,7 +180,7 @@ export default function SenderDashboard() {
             <div key={step.n} className="flex items-start gap-3">
               <div className={cn(
                 "w-7 h-7 rounded-full flex items-center justify-center text-xs font-black shrink-0 mt-0.5",
-                step.done ? "bg-[#ccf02a] text-black" : "bg-white/10 text-white/50"
+                step.done ? "bg-[#c9f45a] text-black" : "bg-white/10 text-white/50"
               )}>
                 {step.done ? "✓" : step.n}
               </div>

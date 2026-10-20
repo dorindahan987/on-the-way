@@ -21,7 +21,7 @@ export default function DriverProfilePage() {
   };
 
   const MENU = [
-    { icon: TrendingUp, label: "ההצעות שלי", sub: `${myBids.length} הצעות הוגשו`, href: "/driver/my-bids", color: "bg-[#ccf02a]/15 text-[#1d44f9]" },
+    { icon: TrendingUp, label: "ההצעות שלי", sub: `${myBids.length} הצעות הוגשו`, href: "/driver/my-bids", color: "bg-[#c9f45a]/15 text-[#4a6ffe]" },
     { icon: MapPin, label: "מסלולים מועדפים", sub: "הגדר אילו מסלולים מעניינים אותך", href: "#", color: "bg-blue-50 text-blue-600" },
     { icon: Bell, label: "התראות", sub: "SMS וואטסאפ לכל הובלה חדשה", href: "#", color: "bg-violet-50 text-violet-600" },
     { icon: Shield, label: "אבטחה", sub: "סיסמה, טלפון, אימות", href: "#", color: "bg-zinc-100 text-zinc-500" },
@@ -33,9 +33,9 @@ export default function DriverProfilePage() {
     <div className="max-w-xl mx-auto px-4 py-6" dir="rtl">
 
       {/* Profile hero */}
-      <div className="rounded-3xl p-6 mb-6" style={{ background: "#1d44f9" }}>
+      <div className="rounded-3xl p-6 mb-6" style={{ background: "#4a6ffe" }}>
         <div className="flex items-center gap-4 mb-5">
-          <div className="w-16 h-16 rounded-full bg-[#ccf02a] flex items-center justify-center text-2xl font-black text-black shrink-0">
+          <div className="w-16 h-16 rounded-full bg-[#c9f45a] flex items-center justify-center text-2xl font-black text-black shrink-0">
             {user.name[0]}
           </div>
           <div className="flex-1">

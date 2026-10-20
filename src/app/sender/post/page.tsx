@@ -123,16 +123,16 @@ function StepDots({ current }: { current: number }) {
             <div className={cn(
               "w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-all duration-300",
               current > s.n
-                ? "bg-[#ccf02a] text-black shadow-md shadow-[#ccf02a]/30"
+                ? "bg-[#c9f45a] text-black shadow-md shadow-[#c9f45a]/30"
                 : current === s.n
-                ? "bg-[#1d44f9] text-white shadow-md shadow-[#1d44f9]/30 scale-110"
+                ? "bg-[#4a6ffe] text-white shadow-md shadow-[#4a6ffe]/30 scale-110"
                 : "bg-zinc-100 text-zinc-400"
             )}>
               {current > s.n ? <CheckCircle2 className="w-4 h-4" /> : s.n}
             </div>
             <span className={cn(
               "text-[10px] font-bold",
-              current === s.n ? "text-zinc-900" : current > s.n ? "text-[#1d44f9]" : "text-zinc-400"
+              current === s.n ? "text-zinc-900" : current > s.n ? "text-[#4a6ffe]" : "text-zinc-400"
             )}>
               {s.label}
             </span>
@@ -140,7 +140,7 @@ function StepDots({ current }: { current: number }) {
           {i < steps.length - 1 && (
             <div className={cn(
               "h-0.5 w-10 sm:w-16 mx-2 mb-5 rounded-full transition-colors duration-500",
-              current > s.n + 1 ? "bg-[#ccf02a]" : current > s.n ? "bg-[#1d44f9]" : "bg-zinc-200"
+              current > s.n + 1 ? "bg-[#c9f45a]" : current > s.n ? "bg-[#4a6ffe]" : "bg-zinc-200"
             )} />
           )}
         </div>
@@ -214,7 +214,7 @@ export default function PostShipmentPage() {
   if (done) return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-zinc-50 to-white px-4" dir="rtl">
       <div className="max-w-sm w-full text-center">
-        <div className="animate-pop-in w-28 h-28 rounded-full bg-[#ccf02a] flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-[#ccf02a]/30">
+        <div className="animate-pop-in w-28 h-28 rounded-full bg-[#c9f45a] flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-[#c9f45a]/30">
           <CheckCircle2 className="w-14 h-14 text-black" strokeWidth={1.5} />
         </div>
 
@@ -416,7 +416,7 @@ export default function PostShipmentPage() {
                 <div className="flex flex-col items-center gap-1">
                   <div className="w-2 h-2 rounded-full bg-primary" />
                   <div className="w-0.5 h-6 bg-primary/30" />
-                  <div className="w-2 h-2 rounded-full bg-[#ccf02a]" />
+                  <div className="w-2 h-2 rounded-full bg-[#c9f45a]" />
                 </div>
                 <div className="flex-1 text-center">
                   {form.from_city && form.to_city
@@ -579,7 +579,7 @@ export default function PostShipmentPage() {
             </div>
 
             {/* Live preview card */}
-            <div className="rounded-3xl p-5" style={{ background: "#1d44f9" }}>
+            <div className="rounded-3xl p-5" style={{ background: "#4a6ffe" }}>
               <p className="text-xs font-black text-white/30 uppercase tracking-widest mb-4">תצוגה מקדימה · כך ייראה מוביל</p>
               <div className="bg-white/8 border border-white/10 rounded-2xl p-4">
                 <div className="flex items-center gap-3 mb-3">
@@ -649,7 +649,7 @@ export default function PostShipmentPage() {
               "w-full h-14 font-black rounded-2xl text-base transition-all active:scale-[0.98]",
               !canNext() && "bg-zinc-100 text-zinc-300 cursor-not-allowed"
             )}
-            style={canNext() ? { background: "#ccf02a", color: "#000", boxShadow: "0 4px 20px rgba(204,240,42,0.4)" } : {}}>
+            style={canNext() ? { background: "#c9f45a", color: "#000", boxShadow: "0 4px 20px rgba(201,244,90,0.4)" } : {}}>
             {!canNext()
               ? step === 1 ? "בחר קטגוריה ושם לפריט" : step === 2 ? "מלא מסלול ורמת עזרה" : "בחר זמן"
               : step < 3

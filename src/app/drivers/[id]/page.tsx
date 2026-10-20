@@ -17,7 +17,7 @@ export default function DriverPublicProfilePage({ params }: { params: Promise<{ 
       <div className="min-h-screen flex items-center justify-center" dir="rtl">
         <div className="text-center">
           <p className="text-zinc-400 mb-4">המוביל לא נמצא</p>
-          <Link href="/" className="text-sm font-bold text-[#1d44f9]">חזרה לדף הבית</Link>
+          <Link href="/" className="text-sm font-bold text-[#4a6ffe]">חזרה לדף הבית</Link>
         </div>
       </div>
     );
@@ -48,7 +48,7 @@ export default function DriverPublicProfilePage({ params }: { params: Promise<{ 
 
             {/* Avatar */}
             <div className="w-16 h-16 rounded-full flex items-center justify-center text-2xl font-black shrink-0"
-              style={{ background: "#ccf02a", color: "#000" }}>
+              style={{ background: "#c9f45a", color: "#000" }}>
               {driver.full_name[0]}
             </div>
 
@@ -57,13 +57,13 @@ export default function DriverPublicProfilePage({ params }: { params: Promise<{ 
                 <h1 className="text-xl font-black text-zinc-900">{driver.full_name}</h1>
                 {driver.verified && (
                   <span className="flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full text-white"
-                    style={{ background: "#1d44f9" }}>
+                    style={{ background: "#4a6ffe" }}>
                     <BadgeCheck className="w-3 h-3" /> מאומת
                   </span>
                 )}
               </div>
               <div className="flex items-center gap-1 mt-1">
-                <Star className="w-4 h-4 fill-[#ccf02a] text-[#ccf02a]" />
+                <Star className="w-4 h-4 fill-[#c9f45a] text-[#c9f45a]" />
                 <span className="font-black text-zinc-900">{avgRating}</span>
                 <span className="text-zinc-400 text-sm">({reviews.length} ביקורות)</span>
               </div>
@@ -92,7 +92,7 @@ export default function DriverPublicProfilePage({ params }: { params: Promise<{ 
           <h2 className="font-black text-zinc-900">ביקורות לקוחות</h2>
           <div className="flex items-center gap-1">
             {[1,2,3,4,5].map(n => (
-              <Star key={n} className="w-3.5 h-3.5 fill-[#ccf02a] text-[#ccf02a]" />
+              <Star key={n} className="w-3.5 h-3.5 fill-[#c9f45a] text-[#c9f45a]" />
             ))}
           </div>
         </div>
@@ -110,8 +110,8 @@ export default function DriverPublicProfilePage({ params }: { params: Promise<{ 
                   <div className="flex gap-0.5">
                     {[1,2,3,4,5].map(n => (
                       <Star key={n} className="w-4 h-4"
-                        fill={n <= r.rating ? "#ccf02a" : "none"}
-                        style={{ color: n <= r.rating ? "#ccf02a" : "#e5e7eb" }} />
+                        fill={n <= r.rating ? "#c9f45a" : "none"}
+                        style={{ color: n <= r.rating ? "#c9f45a" : "#e5e7eb" }} />
                     ))}
                   </div>
                   <span className="text-xs text-zinc-400 shrink-0">{r.date}</span>
@@ -122,7 +122,7 @@ export default function DriverPublicProfilePage({ params }: { params: Promise<{ 
                 <div className="flex items-center justify-between text-xs text-zinc-400 pt-3 border-t border-zinc-50">
                   <div className="flex items-center gap-1.5">
                     <div className="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-black"
-                      style={{ background: "#ccf02a", color: "#000" }}>
+                      style={{ background: "#c9f45a", color: "#000" }}>
                       {r.sender_name[0]}
                     </div>
                     <span className="font-semibold text-zinc-600">{r.sender_name}</span>
@@ -143,7 +143,7 @@ export default function DriverPublicProfilePage({ params }: { params: Promise<{ 
         <div className="mt-8 text-center">
           <Link href="/login?role=sender"
             className="inline-flex items-center gap-2 font-black px-6 py-3.5 rounded-xl text-black text-sm"
-            style={{ background: "#ccf02a" }}>
+            style={{ background: "#c9f45a" }}>
             פרסם הובלה ותן ל{driver.full_name.split(" ")[0]} להציע
           </Link>
         </div>

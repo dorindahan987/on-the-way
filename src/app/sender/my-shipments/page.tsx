@@ -10,7 +10,7 @@ import { useAuth } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 
 const STATUS_LABEL: Record<string, { label: string; color: string; icon: typeof Clock }> = {
-  open:      { label: "פעיל — ממתין להצעות", color: "text-[#1d44f9] bg-[#ccf02a]/15 border-[#ccf02a]/30", icon: Loader2 },
+  open:      { label: "פעיל — ממתין להצעות", color: "text-[#4a6ffe] bg-[#c9f45a]/15 border-[#c9f45a]/30", icon: Loader2 },
   locked:    { label: "נעול — מוביל נבחר",   color: "text-blue-600 bg-blue-50 border-blue-100",            icon: CheckCircle2 },
   completed: { label: "הושלם",               color: "text-zinc-500 bg-zinc-100 border-zinc-200",            icon: CheckCircle2 },
 };

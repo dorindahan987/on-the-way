@@ -14,7 +14,7 @@ const ROLE_THEME = {
   sender: {
     icon: Package,
     isLight: true,
-    panelStyle: { background: "#ccf02a" },
+    panelStyle: { background: "#c9f45a" },
     glowStyle: { background: "rgba(0,0,0,0.08)" },
     badgeStyle: { background: "rgba(0,0,0,0.12)", color: "#000", border: "1px solid rgba(0,0,0,0.1)" },
     badgeText: "שולח · אזור אישי",
@@ -26,14 +26,14 @@ const ROLE_THEME = {
   driver: {
     icon: Truck,
     isLight: false,
-    panelStyle: { background: "#0d0d0d" },
+    panelStyle: { background: "#0a0a0a" },
     glowStyle: { background: "rgba(212,245,0,0.15)" },
-    badgeStyle: { background: "rgba(212,245,0,0.15)", color: "#ccf02a", border: "1px solid rgba(212,245,0,0.2)" },
+    badgeStyle: { background: "rgba(212,245,0,0.15)", color: "#c9f45a", border: "1px solid rgba(212,245,0,0.2)" },
     badgeText: "מוביל · אזור אישי",
     title: "הרוויח עם הרכב שלך",
     sub: "עיין בהובלות פתוחות ושלח הצעות",
-    checkBg: "bg-[#ccf02a]",
-    btnClass: "bg-[#ccf02a] hover:bg-[#b8d920] text-black",
+    checkBg: "bg-[#c9f45a]",
+    btnClass: "bg-[#c9f45a] hover:bg-[#b5e048] text-black",
   },
 };
 
@@ -51,8 +51,8 @@ const ROLES = [
     icon: Truck,
     title: "יש לי רכב ורוצה להרוויח",
     sub: "עיין בהובלות פתוחות ושלח הצעות",
-    color: "border-[#1d44f9] bg-[#1d44f9]/5 text-[#1d44f9]",
-    iconBg: "bg-[#1d44f9]",
+    color: "border-[#4a6ffe] bg-[#4a6ffe]/5 text-[#4a6ffe]",
+    iconBg: "bg-[#4a6ffe]",
   },
 ];
 
@@ -93,10 +93,10 @@ function LoginContent() {
       {/* LEFT PANEL */}
       <div
         className="relative overflow-hidden flex flex-col md:w-[52%] md:min-h-screen px-8 pt-10 pb-12 md:px-14 md:pt-14 md:pb-0 transition-colors duration-500"
-        style={role ? theme.panelStyle : { background: "#1d44f9" }}>
+        style={role ? theme.panelStyle : { background: "#4a6ffe" }}>
 
         <div className="absolute -top-20 right-0 w-[500px] h-[500px] rounded-full blur-[130px] opacity-30 pointer-events-none"
-          style={role ? theme.glowStyle : { background: "#ccf02a" }} />
+          style={role ? theme.glowStyle : { background: "#c9f45a" }} />
 
         <Link href="/" className="relative mb-12 w-fit">
           <Image src="/logo.svg" alt="On The Way" width={115} height={56} unoptimized
@@ -113,7 +113,7 @@ function LoginContent() {
           )}
 
           <h1 className={cn("text-3xl md:text-4xl font-black leading-tight mb-4", theme.isLight ? "text-black" : "text-white")}>
-            {role ? theme.title : <span>ברוכים הבאים<br /><span style={{ color: "#ccf02a" }}>לעל הדרך</span></span>}
+            {role ? theme.title : <span>ברוכים הבאים<br /><span style={{ color: "#c9f45a" }}>לעל הדרך</span></span>}
           </h1>
           <p className={cn("text-base leading-relaxed mb-10", theme.isLight ? "text-black/55" : "text-white/50")}>
             {role ? theme.sub : "כניסה או הרשמה — פחות מ-30 שניות"}

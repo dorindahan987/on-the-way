@@ -44,7 +44,7 @@ export default function SenderShipmentPage({ params }: { params: Promise<{ id: s
 
           {/* Check + congrats */}
           <div className="text-center mb-10">
-            <div className="animate-pop-in w-28 h-28 rounded-full bg-[#ccf02a] flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-[#ccf02a]/30">
+            <div className="animate-pop-in w-28 h-28 rounded-full bg-[#c9f45a] flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-[#c9f45a]/30">
               <CheckCircle2 className="w-14 h-14 text-black" strokeWidth={1.5} />
             </div>
             <h2 className="text-3xl font-black mb-2 text-zinc-900 animate-fade-up">ההובלה ננעלה!</h2>
@@ -57,7 +57,7 @@ export default function SenderShipmentPage({ params }: { params: Promise<{ id: s
           <div className="animate-fade-up bg-white rounded-3xl border border-zinc-100 shadow-xl overflow-hidden mb-4" style={{ animationDelay: "0.2s" }}>
             {/* Header */}
             <div className="px-5 py-5 flex items-center gap-4 border-b border-zinc-50">
-              <div className="w-16 h-16 rounded-full bg-[#ccf02a] flex items-center justify-center text-black font-black text-xl shrink-0 shadow-lg shadow-[#ccf02a]/25">
+              <div className="w-16 h-16 rounded-full bg-[#c9f45a] flex items-center justify-center text-black font-black text-xl shrink-0 shadow-lg shadow-[#c9f45a]/25">
                 {bid.driver.full_name[0]}
               </div>
               <div className="flex-1 min-w-0">
@@ -82,7 +82,7 @@ export default function SenderShipmentPage({ params }: { params: Promise<{ id: s
               <div className="grid grid-cols-2 gap-3">
                 <a
                   href="tel:052-111-1111"
-                  className="flex items-center justify-center gap-2 text-white font-bold text-sm h-12 rounded-2xl transition-colors active:scale-[0.98]" style={{ background: "#1d44f9" }}>
+                  className="flex items-center justify-center gap-2 text-white font-bold text-sm h-12 rounded-2xl transition-colors active:scale-[0.98]" style={{ background: "#4a6ffe" }}>
                   <Phone className="w-4 h-4" />
                   חייג עכשיו
                 </a>
@@ -180,7 +180,7 @@ export default function SenderShipmentPage({ params }: { params: Promise<{ id: s
                   <div className="flex flex-col items-center gap-1 pt-1">
                     <div className="w-2.5 h-2.5 rounded-full bg-primary" />
                     <div className="w-0.5 flex-1 bg-primary/20 min-h-[20px]" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#ccf02a]" />
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#c9f45a]" />
                   </div>
                   <div className="flex-1 space-y-3">
                     <div>
@@ -216,7 +216,7 @@ export default function SenderShipmentPage({ params }: { params: Promise<{ id: s
           </div>
 
           {/* Payment model */}
-          <div className="rounded-3xl p-5" style={{ background: "#1d44f9" }}>
+          <div className="rounded-3xl p-5" style={{ background: "#4a6ffe" }}>
             <div className="flex items-center gap-2.5 mb-4">
               <div className="w-8 h-8 rounded-xl bg-primary/20 flex items-center justify-center">
                 <Shield className="w-4 h-4 text-primary" />
@@ -311,7 +311,7 @@ export default function SenderShipmentPage({ params }: { params: Promise<{ id: s
                         <div className="min-w-0">
                           <div className="flex items-center gap-1.5 mb-0.5">
                             <a href={`/drivers/${bid.driver.id}`} target="_blank"
-                              className="font-black text-sm text-zinc-900 hover:text-[#1d44f9] transition-colors underline-offset-2 hover:underline">
+                              className="font-black text-sm text-zinc-900 hover:text-[#4a6ffe] transition-colors underline-offset-2 hover:underline">
                               {bid.driver.full_name}
                             </a>
                             {bid.driver.verified && <BadgeCheck className="w-4 h-4 text-blue-500 shrink-0" />}

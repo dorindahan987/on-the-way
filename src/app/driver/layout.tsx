@@ -28,7 +28,7 @@ export default function DriverLayout({ children }: { children: React.ReactNode }
 
   return (
     <div className="min-h-screen bg-zinc-50 flex flex-col" dir="rtl">
-      <header className="sticky top-0 z-50" style={{ background: "#1d44f9" }}>
+      <header className="sticky top-0 z-50" style={{ background: "#4a6ffe" }}>
         <div className="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center shrink-0">
             <Image src="/logo.svg" alt="On The Way" width={82} height={40} unoptimized className="brightness-0 invert" />
@@ -41,7 +41,7 @@ export default function DriverLayout({ children }: { children: React.ReactNode }
 
           <Link href="/driver/profile"
             className="flex items-center gap-2 bg-white/10 hover:bg-white/15 transition-colors rounded-2xl px-3 py-1.5">
-            <div className="w-6 h-6 rounded-full bg-[#ccf02a] flex items-center justify-center text-black text-xs font-black">
+            <div className="w-6 h-6 rounded-full bg-[#c9f45a] flex items-center justify-center text-black text-xs font-black">
               {user.name[0]}
             </div>
             <span className="hidden sm:block text-xs font-bold text-white/80">{user.name.split(" ")[0]}</span>
@@ -56,7 +56,7 @@ export default function DriverLayout({ children }: { children: React.ReactNode }
         {NAV.map(({ href, icon: Icon, label }) => (
           <Link key={href} href={href}
             className={cn("flex-1 flex flex-col items-center justify-center gap-1 py-3 text-[10px] font-bold transition-colors",
-              pathname === href ? "text-[#1d44f9]" : "text-zinc-400 hover:text-[#1d44f9]")}>
+              pathname === href ? "text-[#4a6ffe]" : "text-zinc-400 hover:text-[#4a6ffe]")}>
             <Icon className="w-5 h-5" />
             <span>{label}</span>
           </Link>

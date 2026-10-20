@@ -70,7 +70,7 @@ export default function LandingPage() {
             </Link>
             <Link href="/login?role=sender&returnTo=/sender/post"
               className="text-sm font-black px-4 py-2 rounded-lg text-black transition-all hover:brightness-105 active:scale-95"
-              style={{ background: "#ccf02a" }}>
+              style={{ background: "#c9f45a" }}>
               פרסם הובלה
             </Link>
           </div>
@@ -82,7 +82,7 @@ export default function LandingPage() {
         <h1 className="animate-fade-up text-4xl sm:text-5xl font-black text-zinc-900 leading-tight mb-4"
           style={{ animationDelay: "0.05s" }}>
           מכרזי הובלה.<br />
-          <span style={{ color: "#1d44f9" }}>אתם בוחרים את המחיר.</span>
+          <span style={{ color: "#4a6ffe" }}>אתם בוחרים את המחיר.</span>
         </h1>
         <p className="animate-fade-up text-lg text-zinc-500 mb-8 max-w-lg"
           style={{ animationDelay: "0.15s" }}>
@@ -92,13 +92,13 @@ export default function LandingPage() {
         <div className="animate-fade-up flex flex-wrap gap-3" style={{ animationDelay: "0.25s" }}>
           <Link href="/login?role=sender&returnTo=/sender/post"
             className="inline-flex items-center gap-2 font-black px-6 py-3.5 rounded-xl text-black text-sm transition-all active:scale-95 hover:brightness-105"
-            style={{ background: "#ccf02a" }}>
+            style={{ background: "#c9f45a" }}>
             <Package className="w-4 h-4" />
             יש לי פריט להעביר
           </Link>
           <Link href="/login?role=driver"
-            className="inline-flex items-center gap-2 font-bold px-6 py-3.5 rounded-xl text-sm border-2 transition-all active:scale-95 hover:bg-[#1d44f9]/5"
-            style={{ borderColor: "#1d44f9", color: "#1d44f9" }}>
+            className="inline-flex items-center gap-2 font-bold px-6 py-3.5 rounded-xl text-sm border-2 transition-all active:scale-95 hover:bg-[#4a6ffe]/5"
+            style={{ borderColor: "#4a6ffe", color: "#4a6ffe" }}>
             <Truck className="w-4 h-4" />
             יש לי רכב ורוצה לעבוד
           </Link>
@@ -122,7 +122,7 @@ export default function LandingPage() {
             {/* Sender */}
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "#ccf02a" }}>
+                <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "#c9f45a" }}>
                   <Package className="w-4 h-4 text-black" />
                 </div>
                 <p className="font-black text-zinc-900">אם יש לך פריט להעביר</p>
@@ -141,7 +141,7 @@ export default function LandingPage() {
               </ol>
               <Link href="/login?role=sender&returnTo=/sender/post"
                 className="inline-block mt-5 text-sm font-black px-5 py-2.5 rounded-xl text-black"
-                style={{ background: "#ccf02a" }}>
+                style={{ background: "#c9f45a" }}>
                 פרסם עכשיו — חינם
               </Link>
             </div>
@@ -149,7 +149,7 @@ export default function LandingPage() {
             {/* Driver */}
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "#1d44f9" }}>
+                <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: "#4a6ffe" }}>
                   <Truck className="w-4 h-4 text-white" />
                 </div>
                 <p className="font-black text-zinc-900">אם יש לך רכב</p>
@@ -168,7 +168,7 @@ export default function LandingPage() {
               </ol>
               <Link href="/login?role=driver"
                 className="inline-block mt-5 text-sm font-bold px-5 py-2.5 rounded-xl text-white"
-                style={{ background: "#1d44f9" }}>
+                style={{ background: "#4a6ffe" }}>
                 ראה הובלות פתוחות
               </Link>
             </div>
@@ -181,7 +181,7 @@ export default function LandingPage() {
         <div className="flex items-baseline justify-between mb-8">
           <h2 className="font-black text-xl text-zinc-900">ביקורות משתמשים</h2>
           <div className="flex items-center gap-1.5 text-sm text-zinc-500">
-            <Star className="w-4 h-4 fill-[#ccf02a] text-[#ccf02a]" />
+            <Star className="w-4 h-4 fill-[#c9f45a] text-[#c9f45a]" />
             <strong className="text-zinc-900">4.9</strong>
             <span>({reviews.length})</span>
           </div>
@@ -201,19 +201,19 @@ export default function LandingPage() {
                   <div className="flex gap-0.5">
                     {[1,2,3,4,5].map(n => (
                       <Star key={n} className="w-3.5 h-3.5"
-                        fill={n <= r.stars ? "#ccf02a" : "none"}
-                        style={{ color: n <= r.stars ? "#ccf02a" : "#e5e7eb" }} />
+                        fill={n <= r.stars ? "#c9f45a" : "none"}
+                        style={{ color: n <= r.stars ? "#c9f45a" : "#e5e7eb" }} />
                     ))}
                   </div>
                   <span className="text-[10px] font-black px-2 py-0.5 rounded-full"
-                    style={r.role === "sender" ? { background:"#ccf02a", color:"#000" } : { background:"#1d44f9", color:"#fff" }}>
+                    style={r.role === "sender" ? { background:"#c9f45a", color:"#000" } : { background:"#4a6ffe", color:"#fff" }}>
                     {r.role === "sender" ? "שולח" : "מוביל"}
                   </span>
                 </div>
                 <p className="text-sm text-zinc-600 leading-relaxed mb-3">{r.text}</p>
                 <div className="flex items-center gap-2">
                   <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-black"
-                    style={{ background:"#ccf02a", color:"#000" }}>
+                    style={{ background:"#c9f45a", color:"#000" }}>
                     {r.name[0]}
                   </div>
                   <div>
@@ -230,7 +230,7 @@ export default function LandingPage() {
         <div className="border border-zinc-200 rounded-2xl p-6 max-w-lg">
           {submitted ? (
             <div className="flex items-center gap-3">
-              <CheckCircle2 className="w-5 h-5 shrink-0" style={{ color:"#1d44f9" }} />
+              <CheckCircle2 className="w-5 h-5 shrink-0" style={{ color:"#4a6ffe" }} />
               <p className="font-bold text-zinc-900">תודה! הביקורת שלך התפרסמה.</p>
             </div>
           ) : (
@@ -240,14 +240,14 @@ export default function LandingPage() {
                 <div className="grid grid-cols-2 gap-3">
                   <input type="text" placeholder="שם" value={form.name}
                     onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                    className="h-10 border border-zinc-200 rounded-lg px-3 text-sm focus:outline-none focus:border-[#1d44f9] transition-colors" dir="rtl" />
+                    className="h-10 border border-zinc-200 rounded-lg px-3 text-sm focus:outline-none focus:border-[#4a6ffe] transition-colors" dir="rtl" />
                   <div className="flex gap-2">
                     {(["sender","driver"] as const).map(role => (
                       <button key={role} onClick={() => setForm(f => ({ ...f, role }))}
                         className="flex-1 h-10 rounded-lg text-xs font-black border transition-all"
                         style={form.role === role
-                          ? role === "sender" ? { background:"#ccf02a", borderColor:"#ccf02a", color:"#000" }
-                          : { background:"#1d44f9", borderColor:"#1d44f9", color:"#fff" }
+                          ? role === "sender" ? { background:"#c9f45a", borderColor:"#c9f45a", color:"#000" }
+                          : { background:"#4a6ffe", borderColor:"#4a6ffe", color:"#fff" }
                           : { background:"white", borderColor:"#e5e7eb", color:"#9ca3af" }}>
                         {role === "sender" ? "שולח" : "מוביל"}
                       </button>
@@ -258,8 +258,8 @@ export default function LandingPage() {
                 <div className="flex gap-1">
                   {[1,2,3,4,5].map(n => (
                     <Star key={n} className="w-7 h-7 cursor-pointer transition-transform hover:scale-110"
-                      fill={n <= form.stars ? "#ccf02a" : "none"}
-                      style={{ color: n <= form.stars ? "#ccf02a" : "#d1d5db" }}
+                      fill={n <= form.stars ? "#c9f45a" : "none"}
+                      style={{ color: n <= form.stars ? "#c9f45a" : "#d1d5db" }}
                       onClick={() => setForm(f => ({ ...f, stars: n }))} />
                   ))}
                 </div>
@@ -267,12 +267,12 @@ export default function LandingPage() {
                 <textarea placeholder="ספר על החוויה שלך..." value={form.text}
                   onChange={e => setForm(f => ({ ...f, text: e.target.value }))}
                   rows={3} dir="rtl"
-                  className="w-full border border-zinc-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#1d44f9] transition-colors resize-none" />
+                  className="w-full border border-zinc-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#4a6ffe] transition-colors resize-none" />
 
                 <button onClick={submitReview}
                   disabled={!form.name.trim() || form.text.trim().length < 10}
                   className="w-full h-10 font-black rounded-lg text-sm text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-                  style={{ background: "#1d44f9" }}>
+                  style={{ background: "#4a6ffe" }}>
                   פרסם ביקורת
                 </button>
               </div>
