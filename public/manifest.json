@@ -1,0 +1,41 @@
+{
+  "name": "על הדרך — הובלות שיתופיות",
+  "short_name": "על הדרך",
+  "description": "פרסמי פריט לשינוע וקבלי הצעות מחיר תחרותיות מנהגים מאומתים",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "lang": "he",
+  "dir": "rtl",
+  "categories": ["lifestyle", "shopping", "utilities"],
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "פרסם הובלה",
+      "short_name": "פרסם",
+      "url": "/sender/post",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "הובלות פתוחות",
+      "short_name": "מובילים",
+      "url": "/driver",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
