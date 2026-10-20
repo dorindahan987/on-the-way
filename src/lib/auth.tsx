@@ -37,7 +37,7 @@ const MOCK_ACCOUNTS: Record<AuthRole, AuthUser> = {
 
 interface AuthCtx {
   user: AuthUser | null;
-  login: (role: AuthRole, name?: string, phone?: string) => void;
+  login: (role: AuthRole, name?: string, phone?: string, id?: string) => void;
   logout: () => void;
   updateUser: (updates: Partial<AuthUser>) => void;
 }
@@ -58,11 +58,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setReady(true);
   }, []);
 
-  const login = (role: AuthRole, name?: string, phone?: string) => {
+  const login = (role: AuthRole, name?: string, phone?: string, id?: string) => {
     const base = MOCK_ACCOUNTS[role];
     const u: AuthUser = {
       ...base,
-      id: `user_${Date.now()}`,
+      id: id?.trim() || base.id,
       name: name?.trim() || base.name,
       phone: phone?.trim() || base.phone,
     };

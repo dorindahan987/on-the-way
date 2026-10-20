@@ -23,7 +23,8 @@ export default function AuthCallbackPage() {
       localStorage.removeItem("otw_return_to");
       const m = (session.user.user_metadata ?? {}) as Record<string, string>;
       const name = m.full_name ?? m.name ?? session.user.email ?? "משתמש";
-      login(role, name, undefined);
+      const stableId = session.user.id ?? session.user.email ?? "";
+      login(role, name, undefined, stableId);
       router.replace(returnTo);
     };
 
@@ -47,13 +48,14 @@ export default function AuthCallbackPage() {
               const meta = (payload.user_metadata ?? {}) as Record<string, string>;
               const name =
                 meta.full_name ?? meta.name ?? String(payload.email ?? "") ?? "משתמש";
+              const stableId = String(payload.sub ?? payload.email ?? "");
               const role = (localStorage.getItem("otw_pending_role") ?? "sender") as AuthRole;
               const returnTo =
                 localStorage.getItem("otw_return_to") ??
                 (role === "driver" ? "/driver" : "/sender");
               localStorage.removeItem("otw_pending_role");
               localStorage.removeItem("otw_return_to");
-              login(role, name, undefined);
+              login(role, name, undefined, stableId);
               router.replace(returnTo);
               return;
             }
