@@ -595,7 +595,7 @@ export default function PostShipmentPage() {
                 lowest_bid: null,
                 created_at: new Date().toISOString(),
               };
-              saveShipment(s);
+              try { saveShipment(s); } catch {}
               setDone(true);
             }}
             disabled={!canNext()}
