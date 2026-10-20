@@ -27,8 +27,15 @@ const CAT_META: Record<string, { icon: LucideIcon; desc: string }> = {
 };
 
 const POPULAR_CITIES = [
-  "תל אביב","ירושלים","חיפה","באר שבע","נתניה",
-  "פתח תקווה","אשדוד","ראשון לציון","רמת גן","הרצליה","כפר סבא","רחובות",
+  "תל אביב","ירושלים","חיפה","באר שבע","נתניה","פתח תקווה","אשדוד","ראשון לציון",
+  "רמת גן","הרצליה","כפר סבא","רחובות","בני ברק","בת ים","חולון","אשקלון",
+  "רמת השרון","הוד השרון","רעננה","כפר יונה","נס ציונה","לוד","רמלה","מודיעין",
+  "אילת","טבריה","נצרת","נהריה","עכו","קריית שמונה","צפת","כרמיאל","מגדל העמק",
+  "עפולה","בית שאן","חדרה","זכרון יעקב","טירת כרמל","קריית אתא","קריית ביאליק",
+  "קריית מוצקין","קריית ים","קריית גת","יבנה","גדרה","ראש העין","אלעד","ביתר עילית",
+  "בית שמש","מעלה אדומים","ערד","דימונה","נתיבות","שדרות","אופקים","רהט",
+  "גבעתיים","בני עייש","גבעת שמואל","אור יהודה","קרית אונו","פתח תקוה","יהוד","טייבה",
+  "אום אל פחם","שפרעם","סח׳נין","ירכא","מגאר","דאלית אל כרמל","עיסאוויה",
 ];
 const FLOORS = ["קרקע","1","2","3","4","5+"];
 
@@ -38,28 +45,37 @@ function CityPicker({
 }: { label: string; value: string; onChange: (v: string) => void; placeholder?: string }) {
   const [query, setQuery] = useState("");
   const [open, setOpen]   = useState(false);
-  const filtered = query
-    ? POPULAR_CITIES.filter(c => c.includes(query))
-    : POPULAR_CITIES;
+  const inputVal = value || query;
+  const filtered = (value ? value : query)
+    ? POPULAR_CITIES.filter(c => c.includes(value || query)).slice(0, 8)
+    : POPULAR_CITIES.slice(0, 8);
 
   return (
     <div>
       <p className="text-xs font-black text-zinc-400 uppercase tracking-widest mb-2">{label}</p>
       <div className="relative">
-        <div className="flex items-center gap-2.5 border-2 border-zinc-200 rounded-2xl px-4 h-14 bg-white focus-within:border-primary transition-colors shadow-sm">
+        <div className={cn(
+          "flex items-center gap-2.5 border-2 rounded-2xl px-4 h-14 bg-white transition-colors shadow-sm",
+          value ? "border-primary" : "border-zinc-200 focus-within:border-primary"
+        )}>
           <MapPin className="w-4 h-4 text-zinc-300 shrink-0" />
           <input
             type="text"
-            placeholder={placeholder ?? "בחר עיר..."}
-            value={value || query}
+            placeholder={placeholder ?? "הקלד עיר..."}
+            value={inputVal}
             onChange={e => { setQuery(e.target.value); onChange(""); setOpen(true); }}
             onFocus={() => setOpen(true)}
-            onBlur={() => setTimeout(() => setOpen(false), 150)}
+            onBlur={() => setTimeout(() => {
+              // accept free-form input on blur
+              if (query.trim().length > 1) onChange(query.trim());
+              setOpen(false);
+            }, 150)}
             className="flex-1 text-base font-semibold bg-transparent focus:outline-none placeholder:text-zinc-300 placeholder:font-normal"
           />
+          {value && <button onMouseDown={() => { onChange(""); setQuery(""); }} className="text-zinc-300 hover:text-zinc-500">×</button>}
           <ChevronDown className={cn("w-4 h-4 text-zinc-300 transition-transform shrink-0", open && "rotate-180")} />
         </div>
-        {open && (
+        {open && filtered.length > 0 && (
           <div className="absolute top-full right-0 left-0 mt-1.5 bg-white border border-zinc-100 rounded-2xl shadow-2xl shadow-black/8 z-20 overflow-hidden max-h-56 overflow-y-auto">
             {filtered.map(city => (
               <button
@@ -74,7 +90,7 @@ function CityPicker({
         )}
       </div>
       <div className="flex flex-wrap gap-1.5 mt-2.5">
-        {POPULAR_CITIES.slice(0, 5).map(city => (
+        {["תל אביב","ירושלים","חיפה","באר שבע","נתניה"].map(city => (
           <button
             key={city}
             onClick={() => { onChange(city); setQuery(""); }}
