@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import Link from "next/link";
@@ -59,10 +59,17 @@ const ROLES = [
 function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const urlRole = searchParams.get("role") as AuthRole | null;
   const [role, setRole] = useState<AuthRole | null>(urlRole);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      const returnTo = searchParams.get("returnTo");
+      router.replace(returnTo ?? (user.role === "driver" ? "/driver" : "/sender"));
+    }
+  }, [user, router, searchParams]);
 
   const theme = role ? ROLE_THEME[role] : ROLE_THEME.driver;
   const RoleIcon = role ? theme.icon : Truck;

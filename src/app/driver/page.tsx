@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { MOCK_SHIPMENTS } from "@/lib/mock";
 import { getStoredShipments, saveBid } from "@/lib/storage";
-import { CATEGORY_EMOJI, PLATFORM_FEE, type Region, REGIONS, type Shipment } from "@/lib/types";
+import { CATEGORY_EMOJI, PLATFORM_FEE, type Region, REGIONS, CITY_TO_REGION, type Shipment } from "@/lib/types";
 import { useAuth } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 
@@ -31,7 +31,9 @@ export default function DriverFeedPage() {
   }, []);
 
   const feed = allShipments.filter(s =>
-    region === "הכל" || s.from_city.includes(region) || s.to_city.includes(region)
+    region === "הכל" ||
+    CITY_TO_REGION[s.from_city] === region ||
+    CITY_TO_REGION[s.to_city] === region
   );
 
   const avgBid = feed.length

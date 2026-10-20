@@ -3,7 +3,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Package, Truck, BarChart3, Star, CheckCircle2 } from "lucide-react";
+import { useAuth } from "@/lib/auth";
 
 type Review = { name: string; role: "sender" | "driver"; stars: number; text: string; date: string };
 
@@ -31,16 +33,22 @@ const MOCK_REVIEWS: Review[] = [
 ];
 
 export default function LandingPage() {
+  const { user } = useAuth();
+  const router = useRouter();
   const [reviews, setReviews] = useState<Review[]>(MOCK_REVIEWS);
   const [form, setForm] = useState({ name: "", role: "sender" as "sender"|"driver", stars: 5, text: "" });
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
+    if (user) {
+      router.replace(user.role === "driver" ? "/driver" : "/sender");
+      return;
+    }
     try {
       const saved = JSON.parse(localStorage.getItem("otw_reviews") || "[]") as Review[];
       if (saved.length) setReviews([...saved, ...MOCK_REVIEWS]);
     } catch {}
-  }, []);
+  }, [user, router]);
 
   const submitReview = () => {
     if (!form.name.trim() || form.text.trim().length < 10) return;
@@ -53,6 +61,8 @@ export default function LandingPage() {
     } catch {}
     setSubmitted(true);
   };
+
+  if (user) return <div className="min-h-screen bg-white" />;
 
   return (
     <div className="min-h-screen bg-white" dir="rtl">

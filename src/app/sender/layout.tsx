@@ -31,7 +31,7 @@ export default function SenderLayout({ children }: { children: React.ReactNode }
     <div className="min-h-screen bg-zinc-50 flex flex-col" dir="rtl">
       <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-zinc-100">
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
-          <Link href="/" className="flex items-center shrink-0">
+          <Link href="/sender" className="flex items-center shrink-0">
             <Image src="/logo.svg" alt="On The Way" width={82} height={40} unoptimized />
           </Link>
 

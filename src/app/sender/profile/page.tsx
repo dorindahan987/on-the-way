@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Package, Star, ChevronLeft, LogOut, Shield, Bell, HelpCircle, FileText } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { MOCK_SHIPMENTS, MOCK_BIDS } from "@/lib/mock";
+import { getStoredShipments } from "@/lib/storage";
 
 export default function SenderProfilePage() {
   const { user, logout } = useAuth();
@@ -12,7 +13,9 @@ export default function SenderProfilePage() {
 
   if (!user) return null;
 
-  const myShipments = MOCK_SHIPMENTS.filter(s => s.owner_id === user.id);
+  const stored = getStoredShipments().filter(s => s.owner_id === user.id);
+  const mock = MOCK_SHIPMENTS.filter(s => s.owner_id === user.id);
+  const myShipments = stored.length > 0 ? [...stored, ...mock] : mock;
   const totalBids = myShipments.reduce((a, s) => a + s.bids_count, 0);
   const completedShipments = myShipments.filter(s => s.status === "completed").length;
 

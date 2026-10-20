@@ -30,7 +30,7 @@ export default function DriverLayout({ children }: { children: React.ReactNode }
     <div className="min-h-screen bg-zinc-50 flex flex-col" dir="rtl">
       <header className="sticky top-0 z-50" style={{ background: "#4a6ffe" }}>
         <div className="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center shrink-0">
+          <Link href="/driver" className="flex items-center shrink-0">
             <Image src="/logo.svg" alt="On The Way" width={82} height={40} unoptimized className="brightness-0 invert" />
           </Link>
 
