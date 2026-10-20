@@ -33,17 +33,31 @@ export default function AuthCallbackPage() {
       const code = new URLSearchParams(search).get("code");
       const hasHash = hash.includes("access_token=");
 
-      // 1. Implicit flow — access_token in URL hash
+      // 1. Implicit flow — access_token in URL hash → decode JWT directly
       if (hasHash) {
         const params = new URLSearchParams(hash.replace(/^#/, ""));
         const accessToken = params.get("access_token") ?? "";
-        const refreshToken = params.get("refresh_token") ?? "";
         if (accessToken) {
-          const { data } = await supabase.auth.setSession({
-            access_token: accessToken,
-            refresh_token: refreshToken,
-          });
-          if (data.session) { finalize(data.session); return; }
+          try {
+            const parts = accessToken.split(".");
+            if (parts.length === 3) {
+              const payload = JSON.parse(
+                atob(parts[1].replace(/-/g, "+").replace(/_/g, "/"))
+              ) as Record<string, unknown>;
+              const meta = (payload.user_metadata ?? {}) as Record<string, string>;
+              const name =
+                meta.full_name ?? meta.name ?? String(payload.email ?? "") ?? "משתמש";
+              const role = (localStorage.getItem("otw_pending_role") ?? "sender") as AuthRole;
+              const returnTo =
+                localStorage.getItem("otw_return_to") ??
+                (role === "driver" ? "/driver" : "/sender");
+              localStorage.removeItem("otw_pending_role");
+              localStorage.removeItem("otw_return_to");
+              login(role, name, undefined);
+              router.replace(returnTo);
+              return;
+            }
+          } catch {}
         }
       }
 
