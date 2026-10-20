@@ -9,6 +9,7 @@ import {
   Clock, MapPin, Trophy,
 } from "lucide-react";
 import { MOCK_SHIPMENTS, MOCK_BIDS } from "@/lib/mock";
+import { getStoredShipments, getStoredBids } from "@/lib/storage";
 import { calcTotal } from "@/lib/contact-mask";
 import { PLATFORM_FEE } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -21,8 +22,11 @@ const RANK_STYLES = [
 
 export default function SenderShipmentPage({ params }: { params: Promise<{ id: string }> }) {
   const { id }   = use(params);
-  const shipment = MOCK_SHIPMENTS.find(s => s.id === id);
-  const bids     = MOCK_BIDS.filter(b => b.shipment_id === id).sort((a, b) => a.amount - b.amount);
+  const shipment = MOCK_SHIPMENTS.find(s => s.id === id) ?? getStoredShipments().find(s => s.id === id);
+  const bids     = [
+    ...MOCK_BIDS.filter(b => b.shipment_id === id),
+    ...getStoredBids(id),
+  ].sort((a, b) => a.amount - b.amount);
   const [selected, setSelected] = useState<string | null>(null);
   const [locked,   setLocked]   = useState(false);
 

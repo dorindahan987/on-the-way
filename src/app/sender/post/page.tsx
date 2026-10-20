@@ -6,7 +6,9 @@ import {
   ChevronRight, Camera, CheckCircle2, Zap, MapPin,
   ChevronDown, ArrowLeft, Package, Sparkles,
 } from "lucide-react";
-import { CATEGORIES } from "@/lib/types";
+import { CATEGORIES, type Shipment, type HelpLevel, type Urgency } from "@/lib/types";
+import { useAuth } from "@/lib/auth";
+import { saveShipment } from "@/lib/storage";
 import { cn } from "@/lib/utils";
 
 /* ── Data ────────────────────────────────────────── */
@@ -128,10 +130,15 @@ function StepDots({ current }: { current: number }) {
 }
 
 /* ── Main ────────────────────────────────────────── */
+const FLOORS_NUM = ["קרקע","1","2","3","4","5+"];
+function floorNum(f: string) { return f === "קרקע" ? 0 : f === "5+" ? 5 : parseInt(f); }
+
 export default function PostShipmentPage() {
+  const { user }            = useAuth();
   const [step, setStep]     = useState(1);
   const [done, setDone]     = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imageBase64, setImageBase64]   = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [form, setForm]     = useState({
@@ -286,9 +293,11 @@ export default function PostShipmentPage() {
                   onChange={e => {
                     const file = e.target.files?.[0];
                     if (!file) return;
-                    const url = URL.createObjectURL(file);
-                    setImagePreview(url);
+                    setImagePreview(URL.createObjectURL(file));
                     set("hasImage", true);
+                    const reader = new FileReader();
+                    reader.onload = ev => setImageBase64(ev.target?.result as string ?? null);
+                    reader.readAsDataURL(file);
                   }}
                 />
                 {imagePreview ? (
@@ -533,7 +542,35 @@ export default function PostShipmentPage() {
       <div className="fixed bottom-0 inset-x-0 z-20 bg-white/96 backdrop-blur-md border-t border-zinc-100 px-4 py-4 pb-safe">
         <div className="max-w-xl mx-auto">
           <button
-            onClick={() => { if (step < 3) setStep(s => s + 1); else setDone(true); }}
+            onClick={() => {
+              if (step < 3) { setStep(s => s + 1); return; }
+              // Save shipment to shared localStorage
+              const s: Shipment = {
+                id: `ship_${Date.now()}`,
+                owner_id: user?.id ?? "guest",
+                owner: { id: user?.id ?? "guest", full_name: user?.name ?? "אורח", avatar_url: null, avg_rating: 0 },
+                title: form.title,
+                category: form.category as Shipment["category"],
+                image_url: imageBase64 ?? null,
+                description: null,
+                from_city: form.from_city,
+                from_floor: floorNum(form.from_floor),
+                from_elevator: form.from_elevator,
+                to_city: form.to_city,
+                to_floor: floorNum(form.to_floor),
+                to_elevator: form.to_elevator,
+                help_level: form.help_level as HelpLevel,
+                urgency: form.urgency as Urgency,
+                pickup_window: form.urgency === "immediate" ? "מיידי — 3 השעות הקרובות" : "גמיש — בשבועיים הקרובים",
+                status: "open",
+                selected_bid_id: null,
+                bids_count: 0,
+                lowest_bid: null,
+                created_at: new Date().toISOString(),
+              };
+              saveShipment(s);
+              setDone(true);
+            }}
             disabled={!canNext()}
             className={cn(
               "w-full h-14 font-black rounded-2xl text-base transition-all active:scale-[0.98]",

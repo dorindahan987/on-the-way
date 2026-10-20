@@ -1,11 +1,12 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, Zap, Package, MapPin, ChevronLeft, Plus, Clock, CheckCircle2, Loader2 } from "lucide-react";
 import { MOCK_SHIPMENTS, MOCK_BIDS } from "@/lib/mock";
-import { CATEGORY_EMOJI } from "@/lib/types";
-import { PLATFORM_FEE } from "@/lib/types";
+import { getStoredShipments, getStoredBids } from "@/lib/storage";
+import { CATEGORY_EMOJI, PLATFORM_FEE, type Shipment, type Bid } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/auth";
 
@@ -17,9 +18,18 @@ const STATUS_LABEL: Record<string, { label: string; color: string; icon: typeof 
 
 export default function SenderDashboard() {
   const { user } = useAuth();
-  const MY_SHIPMENTS = MOCK_SHIPMENTS.filter(s => s.owner_id === (user?.id ?? "u4"));
-  const totalBids = MY_SHIPMENTS.reduce((acc, s) => acc + s.bids_count, 0);
-  const bestOffer = MY_SHIPMENTS.reduce<number | null>((acc, s) => {
+  const [myShipments, setMyShipments] = useState<Shipment[]>([]);
+  const [allBids, setAllBids]         = useState<Bid[]>([]);
+
+  useEffect(() => {
+    const stored  = getStoredShipments().filter(s => s.owner_id === user?.id);
+    const mock    = MOCK_SHIPMENTS.filter(s => s.owner_id === (user?.id ?? "u4"));
+    setMyShipments([...stored, ...mock]);
+    setAllBids([...getStoredBids(), ...MOCK_BIDS]);
+  }, [user?.id]);
+
+  const totalBids = myShipments.reduce((acc, s) => acc + s.bids_count, 0);
+  const bestOffer = myShipments.reduce<number | null>((acc, s) => {
     if (!s.lowest_bid) return acc;
     const total = s.lowest_bid + PLATFORM_FEE;
     return acc === null || total < acc ? total : acc;
@@ -37,7 +47,7 @@ export default function SenderDashboard() {
       {/* Summary chips */}
       <div className="grid grid-cols-3 gap-3 mb-8">
         <div className="bg-white rounded-2xl border border-zinc-100 p-4 text-center">
-          <p className="text-2xl font-black text-zinc-900">{MY_SHIPMENTS.length}</p>
+          <p className="text-2xl font-black text-zinc-900">{myShipments.length}</p>
           <p className="text-xs text-zinc-400 mt-0.5">הובלות שפרסמת</p>
         </div>
         <div className="bg-white rounded-2xl border border-zinc-100 p-4 text-center">
@@ -66,7 +76,7 @@ export default function SenderDashboard() {
       {/* My shipments */}
       <h2 className="font-black text-base text-zinc-900 mb-3">ההובלות שלי</h2>
 
-      {MY_SHIPMENTS.length === 0 ? (
+      {myShipments.length === 0 ? (
         <div className="bg-white rounded-3xl border border-zinc-100 p-12 text-center">
           <div className="w-16 h-16 rounded-full bg-zinc-100 flex items-center justify-center mx-auto mb-4">
             <Package className="w-7 h-7 text-zinc-400" />
@@ -80,8 +90,8 @@ export default function SenderDashboard() {
         </div>
       ) : (
         <div className="space-y-4">
-          {MY_SHIPMENTS.map(s => {
-            const bids = MOCK_BIDS.filter(b => b.shipment_id === s.id).sort((a, b) => a.amount - b.amount);
+          {myShipments.map(s => {
+            const bids = allBids.filter(b => b.shipment_id === s.id).sort((a, b) => a.amount - b.amount);
             const statusInfo = STATUS_LABEL[s.status] ?? STATUS_LABEL.open;
             const StatusIcon = statusInfo.icon;
 
@@ -163,7 +173,7 @@ export default function SenderDashboard() {
         <p className="text-xs font-black text-white/40 uppercase tracking-widest mb-4">איך זה עובד?</p>
         <div className="space-y-4">
           {[
-            { n: "1", title: "פרסם פריט", desc: "תמונה + מסלול + מועד — פחות מ-60 שניות", done: MY_SHIPMENTS.length > 0 },
+            { n: "1", title: "פרסם פריט", desc: "תמונה + מסלול + מועד — פחות מ-60 שניות", done: myShipments.length > 0 },
             { n: "2", title: "מובילים שולחים הצעות", desc: "כל מוביל מציע מחיר — אתם בוחרים את הטוב ביותר", done: totalBids > 0 },
             { n: "3", title: "נעל ושלם פיקדון ₪35", desc: "לאחר הנעילה פרטי הקשר נחשפים ואפשר לתאם", done: false },
           ].map(step => (

@@ -1,13 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import {
   ArrowLeft, Zap, Send, MapPin, Clock,
   BadgeCheck, ChevronLeft, CheckCircle2, X, Upload,
 } from "lucide-react";
 import { MOCK_SHIPMENTS } from "@/lib/mock";
-import { CATEGORY_EMOJI, type Region, REGIONS } from "@/lib/types";
+import { getStoredShipments, saveBid } from "@/lib/storage";
+import { CATEGORY_EMOJI, PLATFORM_FEE, type Region, REGIONS, type Shipment } from "@/lib/types";
 import { useAuth } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 
@@ -19,10 +20,18 @@ export default function DriverFeedPage() {
   const [submitted, setSubmitted] = useState<Set<string>>(new Set());
   const [showVerify, setShowVerify] = useState(false);
   const [verifySent, setVerifySent] = useState(false);
+  const [allShipments, setAllShipments] = useState<Shipment[]>([]);
 
-  const feed = MOCK_SHIPMENTS.filter(s =>
-    s.status === "open" &&
-    (region === "הכל" || s.from_city.includes(region) || s.to_city.includes(region))
+  useEffect(() => {
+    const stored = getStoredShipments().filter(s => s.status === "open");
+    const mock   = MOCK_SHIPMENTS.filter(s => s.status === "open");
+    // stored shipments first, then mock (no duplicates by id)
+    const mockIds = new Set(stored.map(s => s.id));
+    setAllShipments([...stored, ...mock.filter(s => !mockIds.has(s.id))]);
+  }, []);
+
+  const feed = allShipments.filter(s =>
+    region === "הכל" || s.from_city.includes(region) || s.to_city.includes(region)
   );
 
   const avgBid = feed.length
@@ -33,6 +42,28 @@ export default function DriverFeedPage() {
     setBids(prev => ({ ...prev, [id]: { ...prev[id], [field]: value } }));
 
   const submitBid = (id: string) => {
+    const bidForm = bids[id];
+    if (!bidForm?.amount || !user) return;
+    saveBid({
+      id: `bid_${Date.now()}`,
+      shipment_id: id,
+      driver_id: user.id,
+      driver: {
+        id: user.id,
+        full_name: user.name,
+        avatar_url: null,
+        avg_rating: user.avg_rating,
+        completed_trips: user.completed_trips,
+        verified: user.verified,
+      },
+      amount: Number(bidForm.amount),
+      platform_fee: PLATFORM_FEE,
+      total: Number(bidForm.amount) + PLATFORM_FEE,
+      eta: "לפי תיאום",
+      note: bidForm.note || null,
+      status: "active",
+      created_at: new Date().toISOString(),
+    });
     setSubmitted(prev => new Set([...prev, id]));
     setOpenBid(null);
   };
