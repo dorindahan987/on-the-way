@@ -23,15 +23,18 @@ function AuthCallbackInner() {
     };
 
     const trySession = async () => {
-      if (code) {
-        const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+      // prefer code from searchParams, fallback to window.location for reliability
+      const resolvedCode = code ?? new URLSearchParams(window.location.search).get("code");
+
+      if (resolvedCode) {
+        const { data, error } = await supabase.auth.exchangeCodeForSession(resolvedCode);
         if (!error && data.session?.user) {
           const m = data.session.user.user_metadata ?? {};
           finalize(String(m.full_name ?? m.name ?? ""), data.session.user.email ?? "");
           return;
         }
       }
-      // fallback – session might already exist (implicit flow)
+      // fallback – check if session already exists
       const { data } = await supabase.auth.getSession();
       if (data.session?.user) {
         const m = data.session.user.user_metadata ?? {};
