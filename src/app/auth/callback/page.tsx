@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { useAuth, type AuthRole } from "@/lib/auth";
@@ -9,6 +10,8 @@ import type { Session } from "@supabase/supabase-js";
 export default function AuthCallbackPage() {
   const router = useRouter();
   const { login } = useAuth();
+
+  const [debugInfo, setDebugInfo] = React.useState<string | null>(null);
 
   useEffect(() => {
     const finalize = (session: Session) => {
@@ -25,9 +28,13 @@ export default function AuthCallbackPage() {
     };
 
     const handleCallback = async () => {
-      // 1. Implicit flow — access_token in URL hash
       const hash = window.location.hash;
-      if (hash.includes("access_token=")) {
+      const search = window.location.search;
+      const code = new URLSearchParams(search).get("code");
+      const hasHash = hash.includes("access_token=");
+
+      // 1. Implicit flow — access_token in URL hash
+      if (hasHash) {
         const params = new URLSearchParams(hash.replace(/^#/, ""));
         const accessToken = params.get("access_token") ?? "";
         const refreshToken = params.get("refresh_token") ?? "";
@@ -36,36 +43,45 @@ export default function AuthCallbackPage() {
             access_token: accessToken,
             refresh_token: refreshToken,
           });
-          if (data.session) {
-            finalize(data.session);
-            return;
-          }
+          if (data.session) { finalize(data.session); return; }
         }
       }
 
       // 2. PKCE flow — code in query string
-      const code = new URLSearchParams(window.location.search).get("code");
       if (code) {
         const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-        if (!error && data.session) {
-          finalize(data.session);
-          return;
-        }
-      }
-
-      // 3. Session already stored (detectSessionInUrl auto-set it)
-      const { data } = await supabase.auth.getSession();
-      if (data.session) {
-        finalize(data.session);
+        if (!error && data.session) { finalize(data.session); return; }
+        setDebugInfo(`code נמצא אבל exchange נכשל: ${error?.message ?? "שגיאה לא ידועה"} | code length: ${code.length}`);
         return;
       }
 
-      // Nothing worked
-      router.replace("/login");
+      // 3. Session already stored
+      const { data } = await supabase.auth.getSession();
+      if (data.session) { finalize(data.session); return; }
+
+      // Debug: show what we got
+      setDebugInfo(
+        `hash: ${hash ? hash.substring(0, 60) : "ריק"} | search: ${search || "ריק"} | pending_role: ${localStorage.getItem("otw_pending_role") ?? "ריק"}`
+      );
     };
 
     handleCallback();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (debugInfo) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white p-6">
+        <div className="max-w-sm text-center">
+          <p className="text-red-500 font-bold mb-2">שגיאת התחברות</p>
+          <p className="text-xs text-zinc-500 break-all mb-4">{debugInfo}</p>
+          <button onClick={() => router.replace("/login")}
+            className="px-4 py-2 bg-black text-white rounded-lg text-sm">
+            חזרה לכניסה
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white">
