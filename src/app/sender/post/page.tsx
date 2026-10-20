@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import {
   ChevronRight, Camera, CheckCircle2, Zap, MapPin,
   ChevronDown, ArrowLeft, Package, Sparkles,
+  Armchair, Tv, Box, Bike, WashingMachine, Bed, HelpCircle,
+  Car, Users, Calendar,
 } from "lucide-react";
 import { CATEGORIES, type Shipment, type HelpLevel, type Urgency } from "@/lib/types";
 import { useAuth } from "@/lib/auth";
@@ -13,14 +15,15 @@ import { saveShipment } from "@/lib/storage";
 import { cn } from "@/lib/utils";
 
 /* ── Data ────────────────────────────────────────── */
-const CAT_META: Record<string, { emoji: string; desc: string }> = {
-  "ריהוט":          { emoji: "🛋️",  desc: "ספה, שולחן, מיטה..." },
-  "מוצרי חשמל":    { emoji: "📺",  desc: "טלויזיה, מקרר, מייבש..." },
-  "קופסאות":       { emoji: "📦",  desc: "קופסאות, ארגזים, שקים..." },
-  "אופניים":       { emoji: "🚲",  desc: "אופניים, קורקינט..." },
-  "מכשיר כביסה":  { emoji: "🫧",  desc: "מכונת כביסה, מייבש..." },
-  "מזרן":          { emoji: "🛏️",  desc: "מזרן, בסיס מיטה..." },
-  "אחר":           { emoji: "📦",  desc: "משהו אחר..." },
+import type { LucideIcon } from "lucide-react";
+const CAT_META: Record<string, { icon: LucideIcon; desc: string }> = {
+  "ריהוט":          { icon: Armchair,      desc: "ספה, שולחן, מיטה..." },
+  "מוצרי חשמל":    { icon: Tv,            desc: "טלויזיה, מקרר, מייבש..." },
+  "קופסאות":       { icon: Box,           desc: "קופסאות, ארגזים, שקים..." },
+  "אופניים":       { icon: Bike,          desc: "אופניים, קורקינט..." },
+  "מכשיר כביסה":  { icon: WashingMachine, desc: "מכונת כביסה, מייבש..." },
+  "מזרן":          { icon: Bed,           desc: "מזרן, בסיס מיטה..." },
+  "אחר":           { icon: HelpCircle,    desc: "משהו אחר..." },
 };
 
 const POPULAR_CITIES = [
@@ -265,7 +268,7 @@ export default function PostShipmentPage() {
                         <CheckCircle2 className="w-3.5 h-3.5 text-white" />
                       </div>
                     )}
-                    <span className="text-3xl">{meta.emoji}</span>
+                    {(() => { const Icon = meta.icon; return <Icon className={cn("w-6 h-6 shrink-0", selected ? "text-primary" : "text-zinc-400")} />; })()}
                     <div>
                       <p className={cn("font-black text-sm leading-tight", selected ? "text-primary" : "text-zinc-900")}>{cat}</p>
                       <p className="text-[10px] text-zinc-400 mt-0.5 leading-tight">{meta.desc}</p>
@@ -281,7 +284,7 @@ export default function PostShipmentPage() {
                 <label className="text-xs font-black text-zinc-400 uppercase tracking-widest block">שם הפריט</label>
                 <input
                   type="text"
-                  placeholder={`למשל: ${CAT_META[form.category]?.emoji} ספה כחולה 3 מושבים...`}
+                  placeholder="למשל: ספה כחולה 3 מושבים..."
                   value={form.title}
                   onChange={e => set("title", e.target.value)}
                   autoFocus
@@ -408,8 +411,8 @@ export default function PostShipmentPage() {
               <p className="text-xs font-black text-zinc-400 uppercase tracking-widest mb-3">כמה עזרה נדרשת?</p>
               <div className="space-y-3">
                 {[
-                  { v: "curb_to_curb" as const, emoji: "🚗", title: "מדרכה למדרכה", sub: "המוביל מגיע לרכב ומוריד לרכב" },
-                  { v: "help_needed" as const,  emoji: "💪", title: "עזרה בהרמה",    sub: "המוביל עוזר לשאת עד לרכב ומהרכב" },
+                  { v: "curb_to_curb" as const, Icon: Car,   title: "מדרכה למדרכה", sub: "המוביל מגיע לרכב ומוריד לרכב" },
+                  { v: "help_needed" as const,  Icon: Users, title: "עזרה בהרמה",    sub: "המוביל עוזר לשאת עד לרכב ומהרכב" },
                 ].map(opt => (
                   <button
                     key={opt.v}
@@ -421,10 +424,10 @@ export default function PostShipmentPage() {
                         : "border-zinc-100 bg-zinc-50 hover:border-zinc-200 hover:bg-white"
                     )}>
                     <div className={cn(
-                      "w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shrink-0 transition-colors",
+                      "w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-colors",
                       form.help_level === opt.v ? "bg-primary/10" : "bg-white border border-zinc-200"
                     )}>
-                      {opt.emoji}
+                      <opt.Icon className={cn("w-5 h-5", form.help_level === opt.v ? "text-primary" : "text-zinc-400")} />
                     </div>
                     <div className="flex-1">
                       <p className={cn("font-black text-sm", form.help_level === opt.v ? "text-primary" : "text-zinc-900")}>{opt.title}</p>
@@ -456,7 +459,7 @@ export default function PostShipmentPage() {
               {[
                 {
                   v: "flexible" as const,
-                  emoji: "📅",
+                  Icon: Calendar,
                   title: "גמיש — בשבועיים הקרובים",
                   sub: "יש זמן לקבל הצעות טובות ולבחור בנחת",
                   badge: "מומלץ",
@@ -465,7 +468,7 @@ export default function PostShipmentPage() {
                 },
                 {
                   v: "immediate" as const,
-                  emoji: "⚡",
+                  Icon: Zap,
                   title: "דחוף — ב-3 השעות הקרובות",
                   sub: "מובילים זמינים עכשיו יוצגו ראשונים",
                   badge: "דחוף",
@@ -481,10 +484,10 @@ export default function PostShipmentPage() {
                     form.urgency === opt.v ? opt.selectedBorder : "border-zinc-100 bg-zinc-50 hover:border-zinc-200 hover:bg-white"
                   )}>
                   <div className={cn(
-                    "w-14 h-14 rounded-2xl flex items-center justify-center text-3xl shrink-0 transition-colors mt-0.5",
+                    "w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 transition-colors mt-0.5",
                     form.urgency === opt.v ? "bg-white shadow-md" : "bg-white border border-zinc-200"
                   )}>
-                    {opt.emoji}
+                    <opt.Icon className={cn("w-6 h-6", form.urgency === opt.v && opt.v === "immediate" ? "text-orange-500" : form.urgency === opt.v ? "text-primary" : "text-zinc-400")} />
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
@@ -523,7 +526,7 @@ export default function PostShipmentPage() {
               <p className="text-xs font-black text-white/30 uppercase tracking-widest mb-4">תצוגה מקדימה · כך ייראה מוביל</p>
               <div className="bg-white/8 border border-white/10 rounded-2xl p-4">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="text-2xl">{CAT_META[form.category]?.emoji}</span>
+                  {(() => { const M = CAT_META[form.category]; return M ? <M.icon className="w-6 h-6 text-white/70" /> : null; })()}
                   <div>
                     <p className="text-white font-black text-sm">{form.title}</p>
                     <p className="text-white/40 text-xs mt-0.5">{form.from_city} → {form.to_city}</p>

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, Star, ChevronRight, Send, Zap } from "lucide-react";
+import { ArrowLeft, Star, ChevronRight, Send, Zap, CheckCircle2 } from "lucide-react";
 import { Header } from "@/components/Header";
 import { SHIPMENTS, OFFERS } from "@/lib/data";
 import { cn } from "@/lib/utils";
@@ -96,7 +96,7 @@ export function ShipmentDetail({ id }: { id: string }) {
                   i === 0 ? "border-primary/30 shadow-sm shadow-primary/10" : "border-border"
                 )}
               >
-                {i === 0 && <div className="text-[10px] font-bold text-primary uppercase tracking-wide mb-2">⭐ הזול ביותר</div>}
+                {i === 0 && <div className="flex items-center gap-1 text-[10px] font-bold text-primary uppercase tracking-wide mb-2"><Star className="w-3 h-3 fill-current" /> הזול ביותר</div>}
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
@@ -162,7 +162,7 @@ export function ShipmentDetail({ id }: { id: string }) {
             </>
           ) : (
             <div className="text-center py-1">
-              <p className="font-bold text-green-600">✅ ההצעה נשלחה! נעדכן אותך אם תיסגר.</p>
+              <p className="font-bold text-green-600 flex items-center gap-2"><CheckCircle2 className="w-4 h-4 shrink-0" /> ההצעה נשלחה! נעדכן אותך אם תיסגר.</p>
             </div>
           )}
         </div>

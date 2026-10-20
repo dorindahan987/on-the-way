@@ -20,6 +20,14 @@ const MOCK_REVIEWS: Review[] = [
     text:"אני קובע את המחיר שלי ובוחר אילו הובלות לקחת. הכי טוב שיש למובילים." },
   { name:"יוסי מזרחי", role:"sender", stars:5, date:"אתמול",
     text:"מקרר + מכונת כביסה מבאר שבע לתל אביב. 3 הצעות, הכל חלק." },
+  { name:"נועה שפירא",  role:"sender", stars:5, date:"לפני שבוע",
+    text:"ספה + שולחן + 12 קופסאות. המוביל הגיע בזמן, עבד מהר, מחיר הוגן." },
+  { name:"קרים עוואד",  role:"driver", stars:5, date:"לפני 3 ימים",
+    text:"פלטפורמה מעולה. אני בוחר את הנסיעות שמתאימות לי ומרוויח טוב." },
+  { name:"תמר גולן",    role:"sender", stars:4, date:"לפני 6 ימים",
+    text:"ניסיתי בהתחלה מתוך סקרנות — ועכשיו אני לא יכולה להעביר בלעדיהם." },
+  { name:"עמי ברק",     role:"driver", stars:5, date:"לפני יומיים",
+    text:"הלקוחות כבר מחכים למי שיציע מחיר — לא צריך לשכנע כלום. אוהב את זה." },
 ];
 
 export default function LandingPage() {
@@ -187,7 +195,7 @@ export default function LandingPage() {
           <div className="pointer-events-none absolute inset-y-0 left-0 w-16 z-10"
             style={{ background: "linear-gradient(to right, white, transparent)" }} />
           <div className="animate-marquee flex gap-4 px-5" dir="ltr" style={{ width: "max-content" }}>
-            {[...reviews, ...reviews, ...reviews, ...reviews].map((r, i) => (
+            {[...reviews, ...reviews].map((r, i) => (
               <div key={i} className="w-72 shrink-0 border border-zinc-100 rounded-2xl p-4 bg-white">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex gap-0.5">
