@@ -37,7 +37,7 @@ const MOCK_ACCOUNTS: Record<AuthRole, AuthUser> = {
 
 interface AuthCtx {
   user: AuthUser | null;
-  login: (role: AuthRole) => void;
+  login: (role: AuthRole, name?: string, phone?: string) => void;
   logout: () => void;
   updateUser: (updates: Partial<AuthUser>) => void;
 }
