@@ -543,7 +543,7 @@ export default function PostShipmentPage() {
         <div className="max-w-xl mx-auto">
           <button
             onClick={() => {
-              if (step < 3) { setStep(s => s + 1); return; }
+              if (step < 3) { setStep(s => s + 1); window.scrollTo({ top: 0, behavior: "instant" }); return; }
               // Save shipment to shared localStorage
               const s: Shipment = {
                 id: `ship_${Date.now()}`,

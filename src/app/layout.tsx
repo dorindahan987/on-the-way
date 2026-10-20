@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Heebo } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth";
+import ScrollToTop from "@/components/ScrollToTop";
 
 const heebo = Heebo({
   subsets: ["hebrew", "latin"],
@@ -31,7 +32,10 @@ export default function RootLayout({
   return (
     <html lang="he" dir="rtl" className={`${heebo.variable} h-full`}>
       <body className="min-h-full flex flex-col font-[family-name:var(--font-heebo)]">
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          <ScrollToTop />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
