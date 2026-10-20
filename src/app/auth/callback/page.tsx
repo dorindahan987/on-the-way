@@ -13,30 +13,35 @@ function AuthCallbackInner() {
   useEffect(() => {
     const code = searchParams.get("code");
 
-    const handleSession = (session: { user: { user_metadata?: Record<string, string>; email?: string } } | null) => {
-      if (session?.user) {
-        const role = (localStorage.getItem("otw_pending_role") ?? "sender") as AuthRole;
-        localStorage.removeItem("otw_pending_role");
-        const name = session.user.user_metadata?.full_name
-                  ?? session.user.user_metadata?.name
-                  ?? session.user.email
-                  ?? "משתמש";
-        login(role, name, undefined);
-        router.replace(role === "driver" ? "/driver" : "/sender");
+    const finalize = (userName: string, email: string) => {
+      const role = (localStorage.getItem("otw_pending_role") ?? "sender") as AuthRole;
+      const returnTo = localStorage.getItem("otw_return_to") ?? (role === "driver" ? "/driver" : "/sender");
+      localStorage.removeItem("otw_pending_role");
+      localStorage.removeItem("otw_return_to");
+      login(role, userName || email || "משתמש", undefined);
+      router.replace(returnTo);
+    };
+
+    const trySession = async () => {
+      if (code) {
+        const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+        if (!error && data.session?.user) {
+          const m = data.session.user.user_metadata ?? {};
+          finalize(String(m.full_name ?? m.name ?? ""), data.session.user.email ?? "");
+          return;
+        }
+      }
+      // fallback – session might already exist (implicit flow)
+      const { data } = await supabase.auth.getSession();
+      if (data.session?.user) {
+        const m = data.session.user.user_metadata ?? {};
+        finalize(String(m.full_name ?? m.name ?? ""), data.session.user.email ?? "");
       } else {
         router.replace("/login");
       }
     };
 
-    if (code) {
-      supabase.auth.exchangeCodeForSession(code).then(({ data: { session } }) => {
-        handleSession(session);
-      });
-    } else {
-      supabase.auth.getSession().then(({ data: { session } }) => {
-        handleSession(session);
-      });
-    }
+    trySession();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (

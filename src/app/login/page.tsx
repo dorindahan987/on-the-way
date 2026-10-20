@@ -84,6 +84,8 @@ function LoginContent() {
     if (supabaseReady) {
       // Real Google OAuth via Supabase
       localStorage.setItem("otw_pending_role", role);
+      const returnTo = searchParams.get("returnTo");
+      if (returnTo) localStorage.setItem("otw_return_to", returnTo);
       setLoading(true);
       await supabase.auth.signInWithOAuth({
         provider: "google",

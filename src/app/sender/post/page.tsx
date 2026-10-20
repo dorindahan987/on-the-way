@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   ChevronRight, Camera, CheckCircle2, Zap, MapPin,
   ChevronDown, ArrowLeft, Package, Sparkles,
@@ -135,7 +136,14 @@ function floorNum(f: string) { return f === "קרקע" ? 0 : f === "5+" ? 5 : pa
 
 export default function PostShipmentPage() {
   const { user }            = useAuth();
+  const router              = useRouter();
   const [step, setStep]     = useState(1);
+
+  useEffect(() => {
+    if (!user) {
+      router.replace("/login?role=sender&returnTo=/sender/post");
+    }
+  }, [user, router]);
   const [done, setDone]     = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageBase64, setImageBase64]   = useState<string | null>(null);
