@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Package, Truck, ChevronRight, BadgeCheck, ArrowLeft, Check } from "lucide-react";
 import { useAuth, type AuthRole } from "@/lib/auth";
+import { supabase, supabaseReady } from "@/lib/supabase";
 import { cn } from "@/lib/utils";
 
 /* ── Per-role theme ── */
@@ -78,13 +79,26 @@ function LoginContent() {
   const theme = role ? ROLE_THEME[role] : ROLE_THEME.driver;
   const RoleIcon = role ? theme.icon : Truck;
 
-  const handleGoogle = () => {
+  const handleGoogle = async () => {
     if (!role) return;
-    setLoading(true);
-    setTimeout(() => {
-      login(role, name || undefined, phone || undefined);
-      router.replace(role === "sender" ? "/sender" : "/driver");
-    }, 900);
+    if (supabaseReady) {
+      // Real Google OAuth via Supabase
+      localStorage.setItem("otw_pending_role", role);
+      setLoading(true);
+      await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+    } else {
+      // Fallback mock (until Supabase is configured)
+      setLoading(true);
+      setTimeout(() => {
+        login(role, name || undefined, phone || undefined);
+        router.replace(role === "sender" ? "/sender" : "/driver");
+      }, 900);
+    }
   };
 
   const handlePhone = () => {
