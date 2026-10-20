@@ -5,8 +5,7 @@ const key  = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
 
 export const supabase = createClient(url, key, {
   auth: {
-    flowType: "implicit",
-    detectSessionInUrl: true,
+    detectSessionInUrl: false, // handled manually in /auth/callback
   },
 });
 export const supabaseReady = !!(url && key);
