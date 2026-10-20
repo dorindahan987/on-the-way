@@ -153,6 +153,26 @@ function StepDots({ current }: { current: number }) {
 const FLOORS_NUM = ["קרקע","1","2","3","4","5+"];
 function floorNum(f: string) { return f === "קרקע" ? 0 : f === "5+" ? 5 : parseInt(f); }
 
+async function compressImage(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const img = new window.Image();
+    img.onload = () => {
+      const MAX = 1200;
+      let { width, height } = img;
+      if (width > MAX || height > MAX) {
+        if (width > height) { height = Math.round(height * MAX / width); width = MAX; }
+        else { width = Math.round(width * MAX / height); height = MAX; }
+      }
+      const canvas = document.createElement("canvas");
+      canvas.width = width; canvas.height = height;
+      canvas.getContext("2d")!.drawImage(img, 0, 0, width, height);
+      resolve(canvas.toDataURL("image/jpeg", 0.8));
+    };
+    img.onerror = reject;
+    img.src = URL.createObjectURL(file);
+  });
+}
+
 export default function PostShipmentPage() {
   const { user }            = useAuth();
   const router              = useRouter();
@@ -163,9 +183,12 @@ export default function PostShipmentPage() {
       router.replace("/login?role=sender&returnTo=/sender/post");
     }
   }, [user, router]);
-  const [done, setDone]     = useState(false);
+  const [done, setDone]         = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageBase64, setImageBase64]   = useState<string | null>(null);
+  const [imageLoading, setImageLoading] = useState(false);
+  const [imageError, setImageError]     = useState<string | null>(null);
+  const [publishError, setPublishError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [form, setForm]     = useState({
@@ -317,14 +340,31 @@ export default function PostShipmentPage() {
                   type="file"
                   accept="image/*"
                   className="hidden"
-                  onChange={e => {
+                  onChange={async e => {
                     const file = e.target.files?.[0];
                     if (!file) return;
+                    setImageError(null);
+                    setImageLoading(true);
                     setImagePreview(URL.createObjectURL(file));
-                    set("hasImage", true);
-                    const reader = new FileReader();
-                    reader.onload = ev => setImageBase64(ev.target?.result as string ?? null);
-                    reader.readAsDataURL(file);
+                    try {
+                      const compressed = await compressImage(file);
+                      // ~500KB base64 = ~375KB image — generous limit
+                      if (compressed.length > 500_000) {
+                        setImageError("התמונה גדולה מדי — בחרי תמונה קטנה יותר");
+                        setImagePreview(null);
+                        set("hasImage", false);
+                        if (fileInputRef.current) fileInputRef.current.value = "";
+                      } else {
+                        setImageBase64(compressed);
+                        set("hasImage", true);
+                      }
+                    } catch {
+                      setImageError("שגיאה בטעינת התמונה — נסי שוב");
+                      setImagePreview(null);
+                      set("hasImage", false);
+                    } finally {
+                      setImageLoading(false);
+                    }
                   }}
                 />
                 {imagePreview ? (
@@ -337,10 +377,11 @@ export default function PostShipmentPage() {
                       ×
                     </button>
                     <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/50 to-transparent p-3">
-                      <p className="text-white text-xs font-bold">תמונה צורפה ✓</p>
+                      <p className="text-white text-xs font-bold">{imageLoading ? "דוחס תמונה..." : "תמונה צורפה ✓"}</p>
                     </div>
                   </div>
                 ) : (
+                  {imageError && <p className="text-red-500 text-sm font-semibold mb-2 text-center">{imageError}</p>}
                   <button
                     onClick={() => fileInputRef.current?.click()}
                     className="w-full flex items-center gap-4 rounded-2xl border-2 border-dashed border-zinc-200 bg-zinc-50 hover:border-primary hover:bg-primary/5 p-5 transition-all">
@@ -568,6 +609,7 @@ export default function PostShipmentPage() {
       {/* ── STICKY BOTTOM CTA ──────────────────── */}
       <div className="fixed bottom-0 inset-x-0 z-20 bg-white/96 backdrop-blur-md border-t border-zinc-100 px-4 py-4 pb-safe">
         <div className="max-w-xl mx-auto">
+          {publishError && <p className="text-red-500 text-sm font-semibold text-center mb-2">{publishError}</p>}
           <button
             onClick={() => {
               if (step < 3) { setStep(s => s + 1); window.scrollTo({ top: 0, behavior: "instant" }); return; }
@@ -595,8 +637,12 @@ export default function PostShipmentPage() {
                 lowest_bid: null,
                 created_at: new Date().toISOString(),
               };
-              try { saveShipment(s); } catch {}
-              setDone(true);
+              try {
+                saveShipment(s);
+                setDone(true);
+              } catch {
+                setPublishError("שגיאה בשמירה — נסי להסיר את התמונה ולנסות שוב");
+              }
             }}
             disabled={!canNext()}
             className={cn(

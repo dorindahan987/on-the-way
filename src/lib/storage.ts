@@ -15,23 +15,10 @@ export function getStoredShipments(): Shipment[] {
 }
 
 export function saveShipment(s: Shipment): void {
-  try {
-    // strip large image if storage quota would be exceeded
-    const toSave = { ...s };
-    const list = getStoredShipments();
-    const i = list.findIndex(x => x.id === toSave.id);
-    if (i >= 0) list[i] = toSave; else list.unshift(toSave);
-    try {
-      localStorage.setItem(S_KEY, JSON.stringify(list));
-    } catch {
-      // quota exceeded — retry without image_url
-      toSave.image_url = null;
-      if (i >= 0) list[i] = toSave; else list[0] = toSave;
-      localStorage.setItem(S_KEY, JSON.stringify(list));
-    }
-  } catch (e) {
-    console.error("saveShipment failed:", e);
-  }
+  const list = getStoredShipments();
+  const i = list.findIndex(x => x.id === s.id);
+  if (i >= 0) list[i] = s; else list.unshift(s);
+  localStorage.setItem(S_KEY, JSON.stringify(list));
 }
 
 /* ── Bids ──────────────────────────────────────────────────── */
