@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import {
   ChevronRight, Camera, CheckCircle2, Zap, MapPin,
@@ -131,6 +131,9 @@ function StepDots({ current }: { current: number }) {
 export default function PostShipmentPage() {
   const [step, setStep]     = useState(1);
   const [done, setDone]     = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [form, setForm]     = useState({
     category: "", title: "", hasImage: false,
     from_city: "", to_city: "",
@@ -274,27 +277,47 @@ export default function PostShipmentPage() {
 
             {/* Photo */}
             {form.title.length > 1 && (
-              <button
-                onClick={() => set("hasImage", !form.hasImage)}
-                className={cn(
-                  "animate-fade-up w-full flex items-center gap-4 rounded-2xl border-2 border-dashed p-5 transition-all",
-                  form.hasImage
-                    ? "border-primary bg-primary/5"
-                    : "border-zinc-200 bg-zinc-50 hover:border-zinc-300"
-                )}>
-                <div className={cn(
-                  "w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 transition-colors",
-                  form.hasImage ? "bg-primary" : "bg-white border border-zinc-200"
-                )}>
-                  <Camera className={cn("w-6 h-6", form.hasImage ? "text-white" : "text-zinc-400")} />
-                </div>
-                <div className="text-right">
-                  <p className={cn("font-black text-sm", form.hasImage ? "text-primary" : "text-zinc-800")}>
-                    {form.hasImage ? "תמונה צורפה" : "הוסף תמונה"}
-                  </p>
-                  <p className="text-xs text-zinc-400 mt-0.5">פריטים עם תמונה מקבלים 40% יותר הצעות</p>
-                </div>
-              </button>
+              <div className="animate-fade-up">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={e => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    const url = URL.createObjectURL(file);
+                    setImagePreview(url);
+                    set("hasImage", true);
+                  }}
+                />
+                {imagePreview ? (
+                  <div className="relative rounded-2xl overflow-hidden border-2 border-primary">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={imagePreview} alt="תמונת פריט" className="w-full h-48 object-cover" />
+                    <button
+                      onClick={() => { setImagePreview(null); set("hasImage", false); if (fileInputRef.current) fileInputRef.current.value = ""; }}
+                      className="absolute top-2 left-2 w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center text-lg font-bold hover:bg-black/80 transition-colors">
+                      ×
+                    </button>
+                    <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/50 to-transparent p-3">
+                      <p className="text-white text-xs font-bold">תמונה צורפה ✓</p>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="w-full flex items-center gap-4 rounded-2xl border-2 border-dashed border-zinc-200 bg-zinc-50 hover:border-primary hover:bg-primary/5 p-5 transition-all">
+                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 bg-white border border-zinc-200">
+                      <Camera className="w-6 h-6 text-zinc-400" />
+                    </div>
+                    <div className="text-right">
+                      <p className="font-black text-sm text-zinc-800">הוסף תמונה</p>
+                      <p className="text-xs text-zinc-400 mt-0.5">פריטים עם תמונה מקבלים 40% יותר הצעות</p>
+                    </div>
+                  </button>
+                )}
+              </div>
             )}
           </div>
         )}

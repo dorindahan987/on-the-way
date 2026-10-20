@@ -70,6 +70,7 @@ function LoginContent() {
   const [role, setRole] = useState<AuthRole | null>(urlRole);
   // If role came from URL, skip role-selection step
   const [step, setStep] = useState<Step>(urlRole ? "phone" : "role");
+  const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState(["", "", "", ""]);
   const [loading, setLoading] = useState(false);
@@ -81,7 +82,7 @@ function LoginContent() {
     if (!role) return;
     setLoading(true);
     setTimeout(() => {
-      login(role);
+      login(role, name || undefined, phone || undefined);
       router.replace(role === "sender" ? "/sender" : "/driver");
     }, 900);
   };
@@ -95,7 +96,7 @@ function LoginContent() {
     if (!role) return;
     setLoading(true);
     setTimeout(() => {
-      login(role);
+      login(role, name || undefined, phone || undefined);
       router.replace(role === "sender" ? "/sender" : "/driver");
     }, 700);
   };
@@ -252,6 +253,15 @@ function LoginContent() {
               <p className="text-zinc-400 text-sm">נשלח קוד אימות ב-SMS — 30 שניות</p>
             </div>
 
+            <input
+              type="text"
+              placeholder="שם מלא"
+              value={name}
+              onChange={e => setName(e.target.value)}
+              className="w-full h-14 border-2 border-zinc-200 rounded-2xl px-4 text-base font-semibold focus:outline-none focus:border-zinc-400 transition-colors placeholder:text-zinc-300 placeholder:font-normal"
+              autoFocus
+            />
+
             <div className="flex items-center gap-3 border-2 border-zinc-200 rounded-2xl px-4 h-14 focus-within:border-zinc-400 transition-colors">
               <span className="text-sm font-bold text-zinc-600 shrink-0">🇮🇱 +972</span>
               <div className="w-px h-5 bg-zinc-200 shrink-0" />
@@ -263,7 +273,6 @@ function LoginContent() {
                 onChange={e => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
                 className="flex-1 text-lg font-bold bg-transparent focus:outline-none placeholder:text-zinc-300 placeholder:font-normal placeholder:text-base"
                 dir="ltr"
-                autoFocus
               />
             </div>
 

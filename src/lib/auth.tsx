@@ -39,6 +39,7 @@ interface AuthCtx {
   user: AuthUser | null;
   login: (role: AuthRole) => void;
   logout: () => void;
+  updateUser: (updates: Partial<AuthUser>) => void;
 }
 
 const AuthContext = createContext<AuthCtx | null>(null);
@@ -57,8 +58,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setReady(true);
   }, []);
 
-  const login = (role: AuthRole) => {
-    const u = MOCK_ACCOUNTS[role];
+  const login = (role: AuthRole, name?: string, phone?: string) => {
+    const base = MOCK_ACCOUNTS[role];
+    const u: AuthUser = {
+      ...base,
+      id: `user_${Date.now()}`,
+      name: name?.trim() || base.name,
+      phone: phone?.trim() || base.phone,
+    };
     setUser(u);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(u));
   };
@@ -68,10 +75,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem(STORAGE_KEY);
   };
 
+  const updateUser = (updates: Partial<AuthUser>) => {
+    if (!user) return;
+    const updated = { ...user, ...updates };
+    setUser(updated);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+  };
+
   if (!ready) return <div className="min-h-screen bg-white" />;
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

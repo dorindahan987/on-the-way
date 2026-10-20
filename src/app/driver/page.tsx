@@ -4,24 +4,30 @@ import { useState } from "react";
 import Image from "next/image";
 import {
   ArrowLeft, Zap, Send, MapPin, Clock,
-  BadgeCheck, ChevronLeft, CheckCircle2, TrendingUp,
+  BadgeCheck, ChevronLeft, CheckCircle2, X, Upload,
 } from "lucide-react";
 import { MOCK_SHIPMENTS } from "@/lib/mock";
 import { CATEGORY_EMOJI, type Region, REGIONS } from "@/lib/types";
+import { useAuth } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 
 export default function DriverFeedPage() {
+  const { user, updateUser }      = useAuth();
   const [region, setRegion]       = useState<Region>("הכל");
   const [openBid, setOpenBid]     = useState<string | null>(null);
   const [bids, setBids]           = useState<Record<string, { amount: string; note: string }>>({});
   const [submitted, setSubmitted] = useState<Set<string>>(new Set());
+  const [showVerify, setShowVerify] = useState(false);
+  const [verifySent, setVerifySent] = useState(false);
 
   const feed = MOCK_SHIPMENTS.filter(s =>
     s.status === "open" &&
     (region === "הכל" || s.from_city.includes(region) || s.to_city.includes(region))
   );
 
-  const totalPotential = feed.reduce((a, s) => a + (s.lowest_bid ?? 180), 0);
+  const avgBid = feed.length
+    ? Math.round(feed.reduce((a, s) => a + (s.lowest_bid ?? 180), 0) / feed.length)
+    : 0;
 
   const handleBidChange = (id: string, field: string, value: string) =>
     setBids(prev => ({ ...prev, [id]: { ...prev[id], [field]: value } }));
@@ -34,38 +40,108 @@ export default function DriverFeedPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-6" dir="rtl">
 
+      {/* ── Verification modal ─────────────────── */}
+      {showVerify && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+          onClick={e => { if (e.target === e.currentTarget) setShowVerify(false); }}>
+          <div className="bg-white rounded-3xl w-full max-w-md p-6 shadow-2xl">
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="font-black text-zinc-900 text-lg">אימות זהות מוביל</h3>
+              <button onClick={() => setShowVerify(false)}
+                className="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center hover:bg-zinc-200 transition-colors">
+                <X className="w-4 h-4 text-zinc-500" />
+              </button>
+            </div>
+
+            {verifySent ? (
+              <div className="text-center py-6">
+                <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+                  style={{ background: "#ccf02a" }}>
+                  <CheckCircle2 className="w-8 h-8 text-black" />
+                </div>
+                <p className="font-black text-zinc-900 text-lg mb-2">הבקשה נשלחה!</p>
+                <p className="text-zinc-500 text-sm">נבדוק את המסמכים ונחזור תוך 24 שעות.</p>
+                <button onClick={() => { setShowVerify(false); setVerifySent(false); }}
+                  className="mt-6 w-full h-12 font-black rounded-2xl text-black text-sm"
+                  style={{ background: "#ccf02a" }}>
+                  סגור
+                </button>
+              </div>
+            ) : (
+              <>
+                <p className="text-zinc-500 text-sm mb-5 leading-relaxed">
+                  אימות מגדיל את הסיכוי לקבל הובלות. נדרשים 2 מסמכים:
+                </p>
+                <div className="space-y-3 mb-6">
+                  {[
+                    { label: "תעודת זהות", sub: "צילום קדמי ואחורי" },
+                    { label: "רישיון נהיגה", sub: "בתוקף" },
+                  ].map(doc => (
+                    <label key={doc.label}
+                      className="flex items-center gap-4 p-4 rounded-2xl border-2 border-dashed border-zinc-200 hover:border-[#1d44f9]/40 cursor-pointer transition-colors">
+                      <div className="w-10 h-10 rounded-xl bg-zinc-100 flex items-center justify-center shrink-0">
+                        <Upload className="w-5 h-5 text-zinc-400" />
+                      </div>
+                      <div>
+                        <p className="font-bold text-sm text-zinc-800">{doc.label}</p>
+                        <p className="text-xs text-zinc-400">{doc.sub}</p>
+                      </div>
+                      <input type="file" accept="image/*,.pdf" className="hidden" />
+                    </label>
+                  ))}
+                </div>
+                <button
+                  onClick={() => {
+                    setVerifySent(true);
+                    updateUser({ verified: false }); // stays false until admin approves
+                  }}
+                  className="w-full h-13 font-black rounded-2xl text-black text-sm py-3"
+                  style={{ background: "#ccf02a" }}>
+                  שלח לאימות
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* ── Top header ────────────────────────── */}
       <div className="mb-6">
         <h1 className="text-2xl font-black text-zinc-900 mb-0.5">הובלות פתוחות</h1>
-        <p className="text-zinc-400 text-sm">{feed.length} הובלות מחכות להצעה שלך</p>
+        <p className="text-zinc-400 text-sm">{feed.length} הובלות ממתינות להצעה שלך</p>
       </div>
 
       {/* ── Earnings banner ───────────────────── */}
       <div className="rounded-3xl p-5 mb-4 overflow-hidden relative" style={{ background: "#1d44f9" }}>
         <div className="absolute top-0 left-0 w-48 h-48 bg-[#ccf02a]/10 rounded-full blur-[60px] pointer-events-none" />
-        <div className="relative flex items-center justify-between">
+        <div className="relative flex items-center justify-between gap-4">
           <div>
-            <p className="text-white/70 text-xs font-semibold mb-1">פוטנציאל השתכרות היום</p>
-            <p className="text-white font-black text-3xl leading-none">₪{totalPotential.toLocaleString()}</p>
-            <p className="text-white/60 text-xs mt-1.5">{feed.length} הובלות זמינות · אזורך</p>
+            <p className="text-white/60 text-xs font-semibold mb-1 uppercase tracking-wide">ממוצע לכל הובלה</p>
+            <p className="text-white font-black text-3xl leading-none">₪{avgBid}</p>
+            <p className="text-white/60 text-xs mt-1.5">{feed.length} הובלות פתוחות · שלח הצעה ותרוויח</p>
           </div>
-          <div className="w-16 h-16 rounded-2xl bg-[#ccf02a]/15 border border-[#ccf02a]/20 flex items-center justify-center">
-            <TrendingUp className="w-8 h-8 text-[#ccf02a]" />
+          <div className="shrink-0 text-center bg-[#ccf02a]/15 border border-[#ccf02a]/20 rounded-2xl px-4 py-3">
+            <p className="text-[#ccf02a] font-black text-2xl leading-none">{feed.length}</p>
+            <p className="text-white/50 text-[10px] mt-1">הובלות</p>
           </div>
         </div>
       </div>
 
       {/* ── Verification CTA ──────────────────── */}
-      <div className="flex items-center gap-3 bg-blue-50 border border-blue-100 rounded-2xl px-4 py-3 mb-6">
-        <BadgeCheck className="w-5 h-5 text-blue-500 shrink-0" />
-        <div className="flex-1 min-w-0">
-          <p className="text-blue-800 font-bold text-sm">קבל תג &ldquo;נהג מאומת&rdquo;</p>
-          <p className="text-blue-400 text-xs mt-0.5">מובילים מאומתים מקבלים 3× יותר הובלות</p>
+      {!user?.verified && (
+        <div className="flex items-center gap-3 bg-blue-50 border border-blue-100 rounded-2xl px-4 py-3 mb-6">
+          <BadgeCheck className="w-5 h-5 text-blue-500 shrink-0" />
+          <div className="flex-1 min-w-0">
+            <p className="text-blue-800 font-bold text-sm">קבל תג &ldquo;נהג מאומת&rdquo;</p>
+            <p className="text-blue-400 text-xs mt-0.5">מובילים מאומתים מקבלים 3× יותר הובלות</p>
+          </div>
+          <button
+            onClick={() => setShowVerify(true)}
+            className="text-xs font-bold text-blue-600 bg-white border border-blue-200 px-3 py-1.5 rounded-xl hover:bg-blue-50 transition-colors shrink-0">
+            אמת →
+          </button>
         </div>
-        <button className="text-xs font-bold text-blue-600 bg-white border border-blue-200 px-3 py-1.5 rounded-xl hover:bg-blue-50 transition-colors shrink-0">
-          אמת →
-        </button>
-      </div>
+      )}
 
       {/* ── Region filters ────────────────────── */}
       <div className="flex gap-2 overflow-x-auto pb-2 mb-5 [scrollbar-width:none]">

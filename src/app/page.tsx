@@ -180,9 +180,14 @@ export default function LandingPage() {
         </div>
 
         {/* Carousel */}
-        <div className="marquee-wrap overflow-hidden -mx-5 mb-10">
-          <div className="animate-marquee flex gap-4 px-5" style={{ width: "max-content" }}>
-            {[...reviews, ...reviews].map((r, i) => (
+        <div className="marquee-wrap relative overflow-hidden -mx-5 mb-10">
+          {/* fade edges */}
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-16 z-10"
+            style={{ background: "linear-gradient(to left, white, transparent)" }} />
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-16 z-10"
+            style={{ background: "linear-gradient(to right, white, transparent)" }} />
+          <div className="animate-marquee flex gap-4 px-5" dir="ltr" style={{ width: "max-content" }}>
+            {[...reviews, ...reviews, ...reviews, ...reviews].map((r, i) => (
               <div key={i} className="w-72 shrink-0 border border-zinc-100 rounded-2xl p-4 bg-white">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex gap-0.5">
