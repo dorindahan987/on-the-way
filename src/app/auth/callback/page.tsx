@@ -1,50 +1,37 @@
 "use client";
 
-import { useEffect, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { useAuth, type AuthRole } from "@/lib/auth";
 
-function AuthCallbackInner() {
+export default function AuthCallbackPage() {
   const router = useRouter();
   const { login } = useAuth();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
-    const code = searchParams.get("code");
-
-    const finalize = (userName: string, email: string) => {
-      const role = (localStorage.getItem("otw_pending_role") ?? "sender") as AuthRole;
-      const returnTo = localStorage.getItem("otw_return_to") ?? (role === "driver" ? "/driver" : "/sender");
-      localStorage.removeItem("otw_pending_role");
-      localStorage.removeItem("otw_return_to");
-      login(role, userName || email || "משתמש", undefined);
-      router.replace(returnTo);
-    };
-
-    const trySession = async () => {
-      // prefer code from searchParams, fallback to window.location for reliability
-      const resolvedCode = code ?? new URLSearchParams(window.location.search).get("code");
-
-      if (resolvedCode) {
-        const { data, error } = await supabase.auth.exchangeCodeForSession(resolvedCode);
-        if (!error && data.session?.user) {
-          const m = data.session.user.user_metadata ?? {};
-          finalize(String(m.full_name ?? m.name ?? ""), data.session.user.email ?? "");
-          return;
-        }
+    // With implicit flow, Supabase detects the session from the URL hash automatically.
+    // We listen for SIGNED_IN and then finalize our own auth state.
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN" && session?.user) {
+        subscription.unsubscribe();
+        const role = (localStorage.getItem("otw_pending_role") ?? "sender") as AuthRole;
+        const returnTo = localStorage.getItem("otw_return_to") ?? (role === "driver" ? "/driver" : "/sender");
+        localStorage.removeItem("otw_pending_role");
+        localStorage.removeItem("otw_return_to");
+        const m = session.user.user_metadata as Record<string, string> | undefined ?? {};
+        const name = m.full_name ?? m.name ?? session.user.email ?? "משתמש";
+        login(role, name, undefined);
+        router.replace(returnTo);
       }
-      // fallback – check if session already exists
-      const { data } = await supabase.auth.getSession();
-      if (data.session?.user) {
-        const m = data.session.user.user_metadata ?? {};
-        finalize(String(m.full_name ?? m.name ?? ""), data.session.user.email ?? "");
-      } else {
-        router.replace("/login");
-      }
-    };
+    });
 
-    trySession();
+    // Fallback: if no event after 6s redirect to login
+    const timeout = setTimeout(() => router.replace("/login"), 6000);
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(timeout);
+    };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -57,10 +44,3 @@ function AuthCallbackInner() {
   );
 }
 
-export default function AuthCallbackPage() {
-  return (
-    <Suspense>
-      <AuthCallbackInner />
-    </Suspense>
-  );
-}

@@ -60,7 +60,7 @@ export default function LandingPage() {
               className="text-sm font-semibold text-zinc-600 hover:text-zinc-900 px-4 py-2 rounded-lg border border-zinc-200 hover:border-zinc-300 transition-colors">
               אני מוביל
             </Link>
-            <Link href="/login?role=sender"
+            <Link href="/login?role=sender&returnTo=/sender/post"
               className="text-sm font-black px-4 py-2 rounded-lg text-black transition-all hover:brightness-105 active:scale-95"
               style={{ background: "#ccf02a" }}>
               פרסם הובלה
@@ -82,7 +82,7 @@ export default function LandingPage() {
           ללא עמלות. ללא מתווכים.
         </p>
         <div className="animate-fade-up flex flex-wrap gap-3" style={{ animationDelay: "0.25s" }}>
-          <Link href="/login?role=sender"
+          <Link href="/login?role=sender&returnTo=/sender/post"
             className="inline-flex items-center gap-2 font-black px-6 py-3.5 rounded-xl text-black text-sm transition-all active:scale-95 hover:brightness-105"
             style={{ background: "#ccf02a" }}>
             <Package className="w-4 h-4" />
@@ -131,7 +131,7 @@ export default function LandingPage() {
                   </li>
                 ))}
               </ol>
-              <Link href="/login?role=sender"
+              <Link href="/login?role=sender&returnTo=/sender/post"
                 className="inline-block mt-5 text-sm font-black px-5 py-2.5 rounded-xl text-black"
                 style={{ background: "#ccf02a" }}>
                 פרסם עכשיו — חינם
