@@ -41,10 +41,15 @@ export default function DriverLayout({ children }: { children: React.ReactNode }
 
           <Link href="/driver/profile"
             className="flex items-center gap-2 bg-white/10 hover:bg-white/15 transition-colors rounded-2xl px-3 py-1.5">
-            <div className="w-6 h-6 rounded-full bg-[#c9f45a] flex items-center justify-center text-black text-xs font-black">
-              {user.name[0]}
+            <div className="w-6 h-6 rounded-full bg-[#c9f45a] overflow-hidden flex items-center justify-center text-black text-xs font-black shrink-0">
+              {user.avatar
+                ? <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                : user.name[0]}
             </div>
-            <span className="hidden sm:block text-xs font-bold text-white/80">{user.name.split(" ")[0]}</span>
+            <div className="hidden sm:flex flex-col items-end">
+              <span className="text-xs font-bold text-white/90 leading-tight">{user.name.split(" ")[0]}</span>
+              <span className="text-[10px] font-black text-[#c9f45a] leading-tight">מוביל</span>
+            </div>
             {user.verified && <BadgeCheck className="w-3.5 h-3.5 text-blue-400" />}
           </Link>
         </div>

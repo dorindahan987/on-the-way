@@ -16,16 +16,13 @@ export default function AuthCallbackPage() {
   useEffect(() => {
     const finalize = (session: Session) => {
       const role = (localStorage.getItem("otw_pending_role") ?? "sender") as AuthRole;
-      const returnTo =
-        localStorage.getItem("otw_return_to") ??
-        (role === "driver" ? "/driver" : "/sender");
       localStorage.removeItem("otw_pending_role");
       localStorage.removeItem("otw_return_to");
       const m = (session.user.user_metadata ?? {}) as Record<string, string>;
       const name = m.full_name ?? m.name ?? session.user.email ?? "משתמש";
       const stableId = session.user.id ?? session.user.email ?? "";
       login(role, name, undefined, stableId);
-      router.replace(returnTo);
+      router.replace("/onboarding");
     };
 
     const handleCallback = async () => {
@@ -56,7 +53,7 @@ export default function AuthCallbackPage() {
               localStorage.removeItem("otw_pending_role");
               localStorage.removeItem("otw_return_to");
               login(role, name, undefined, stableId);
-              router.replace(returnTo);
+              router.replace("/onboarding");
               return;
             }
           } catch {}

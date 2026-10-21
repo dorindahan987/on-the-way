@@ -47,10 +47,15 @@ export default function SenderLayout({ children }: { children: React.ReactNode }
             </Link>
             <Link href="/sender/profile"
               className="flex items-center gap-2 bg-zinc-100 hover:bg-zinc-200 transition-colors rounded-2xl px-3 py-1.5">
-              <div className="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-white text-xs font-black">
-                {user.name[0]}
+              <div className="w-6 h-6 rounded-full bg-[#c9f45a] overflow-hidden flex items-center justify-center text-black text-xs font-black shrink-0">
+                {user.avatar
+                  ? <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                  : user.name[0]}
               </div>
-              <span className="hidden sm:block text-xs font-bold text-zinc-700">{user.name.split(" ")[0]}</span>
+              <div className="hidden sm:flex flex-col items-end">
+                <span className="text-xs font-bold text-zinc-700 leading-tight">{user.name.split(" ")[0]}</span>
+                <span className="text-[10px] font-black text-[#4a6ffe] leading-tight">שולח</span>
+              </div>
             </Link>
           </div>
         </div>

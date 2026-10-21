@@ -2,12 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Truck, Star, ChevronLeft, LogOut, BadgeCheck, Shield, Bell, HelpCircle, FileText, TrendingUp, MapPin } from "lucide-react";
+import { Truck, Star, ChevronLeft, LogOut, BadgeCheck, Shield, Bell, HelpCircle, FileText, TrendingUp, MapPin, Camera } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { MOCK_BIDS } from "@/lib/mock";
 
 export default function DriverProfilePage() {
-  const { user, logout } = useAuth();
+  const { user, logout, updateUser } = useAuth();
   const router = useRouter();
 
   if (!user) return null;
@@ -35,9 +35,23 @@ export default function DriverProfilePage() {
       {/* Profile hero */}
       <div className="rounded-3xl p-6 mb-6" style={{ background: "#4a6ffe" }}>
         <div className="flex items-center gap-4 mb-5">
-          <div className="w-16 h-16 rounded-full bg-[#c9f45a] flex items-center justify-center text-2xl font-black text-black shrink-0">
-            {user.name[0]}
-          </div>
+          <label className="relative cursor-pointer shrink-0 group">
+            <div className="w-16 h-16 rounded-full bg-[#c9f45a] overflow-hidden flex items-center justify-center text-2xl font-black text-black">
+              {user.avatar
+                ? <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                : user.name[0]}
+            </div>
+            <div className="absolute bottom-0 left-0 w-6 h-6 rounded-full bg-white flex items-center justify-center shadow group-hover:bg-zinc-100 transition-colors">
+              <Camera className="w-3 h-3 text-zinc-600" />
+            </div>
+            <input type="file" accept="image/*" className="hidden" onChange={e => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              const reader = new FileReader();
+              reader.onload = () => updateUser({ avatar: reader.result as string });
+              reader.readAsDataURL(file);
+            }} />
+          </label>
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-0.5">
               <h1 className="font-black text-xl text-white leading-tight">{user.name}</h1>
@@ -45,8 +59,14 @@ export default function DriverProfilePage() {
             </div>
             <p className="text-white/50 text-sm">{user.phone}</p>
             <div className="flex items-center gap-1.5 mt-1.5">
-              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-              <span className="text-white/70 text-xs font-bold">{user.avg_rating} · {user.completed_trips} הובלות</span>
+              {user.completed_trips > 0 ? (
+                <>
+                  <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                  <span className="text-white/70 text-xs font-bold">{user.avg_rating} · {user.completed_trips} הובלות</span>
+                </>
+              ) : (
+                <span className="text-white/40 text-xs">מוביל חדש</span>
+              )}
               {user.verified && <span className="text-[10px] font-black bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded-lg">מאומת ✓</span>}
             </div>
           </div>
@@ -57,7 +77,7 @@ export default function DriverProfilePage() {
           {[
             { label: "הובלות", value: user.completed_trips },
             { label: "הצעות הוגשו", value: myBids.length },
-            { label: "דירוג", value: `${user.avg_rating}★` },
+            { label: "דירוג", value: user.completed_trips > 0 ? `${user.avg_rating}★` : "—" },
           ].map(s => (
             <div key={s.label} className="bg-white/6 rounded-2xl p-3 text-center">
               <p className="text-white font-black text-lg leading-none">{s.value}</p>

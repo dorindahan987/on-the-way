@@ -12,6 +12,8 @@ export interface AuthUser {
   verified: boolean;
   avg_rating: number;
   completed_trips: number;
+  avatar?: string | null;
+  vehicle_type?: string | null;
 }
 
 const MOCK_ACCOUNTS: Record<AuthRole, AuthUser> = {
@@ -21,17 +23,17 @@ const MOCK_ACCOUNTS: Record<AuthRole, AuthUser> = {
     phone: "055-444-4444",
     role: "sender",
     verified: false,
-    avg_rating: 4.8,
-    completed_trips: 6,
+    avg_rating: 0,
+    completed_trips: 0,
   },
   driver: {
     id: "u1",
     name: "יוסי כהן",
     phone: "052-111-1111",
     role: "driver",
-    verified: true,
-    avg_rating: 4.9,
-    completed_trips: 124,
+    verified: false,
+    avg_rating: 0,
+    completed_trips: 0,
   },
 };
 

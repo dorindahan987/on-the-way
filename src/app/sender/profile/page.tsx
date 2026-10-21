@@ -2,13 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Package, Star, ChevronLeft, LogOut, Shield, Bell, HelpCircle, FileText } from "lucide-react";
+import { Package, Star, ChevronLeft, LogOut, Shield, Bell, HelpCircle, FileText, Camera } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { MOCK_SHIPMENTS, MOCK_BIDS } from "@/lib/mock";
 import { getStoredShipments } from "@/lib/storage";
 
 export default function SenderProfilePage() {
-  const { user, logout } = useAuth();
+  const { user, logout, updateUser } = useAuth();
   const router = useRouter();
 
   if (!user) return null;
@@ -38,22 +38,36 @@ export default function SenderProfilePage() {
       {/* Profile hero */}
       <div className="bg-gradient-to-l from-primary to-indigo-500 rounded-3xl p-6 mb-6 text-white">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center text-2xl font-black shrink-0">
-            {user.name[0]}
-          </div>
-          <div className="flex-1">
-            <h1 className="font-black text-xl leading-tight">{user.name}</h1>
-            <p className="text-white/60 text-sm mt-0.5">{user.phone}</p>
-            <div className="flex items-center gap-1 mt-1.5">
-              <Star className="w-3.5 h-3.5 fill-white/80 text-white/80" />
-              <span className="text-white/80 text-xs font-bold">{user.avg_rating} · שולח</span>
+          <label className="relative cursor-pointer shrink-0 group">
+            <div className="w-16 h-16 rounded-full bg-white/20 overflow-hidden flex items-center justify-center text-2xl font-black">
+              {user.avatar
+                ? <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                : user.name[0]}
             </div>
+            <div className="absolute bottom-0 left-0 w-6 h-6 rounded-full bg-white flex items-center justify-center shadow group-hover:bg-zinc-100 transition-colors">
+              <Camera className="w-3 h-3 text-zinc-600" />
+            </div>
+            <input type="file" accept="image/*" className="hidden" onChange={e => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              const reader = new FileReader();
+              reader.onload = () => updateUser({ avatar: reader.result as string });
+              reader.readAsDataURL(file);
+            }} />
+          </label>
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-0.5">
+              <h1 className="font-black text-xl leading-tight">{user.name}</h1>
+              <span className="text-[10px] font-black bg-[#c9f45a] text-black px-2 py-0.5 rounded-full">שולח</span>
+            </div>
+            <p className="text-white/60 text-sm">{user.phone}</p>
+            {user.avg_rating > 0 && (
+              <div className="flex items-center gap-1 mt-1.5">
+                <Star className="w-3.5 h-3.5 fill-white/80 text-white/80" />
+                <span className="text-white/80 text-xs font-bold">{user.avg_rating}</span>
+              </div>
+            )}
           </div>
-          <button
-            onClick={() => {/* edit */}}
-            className="text-white/60 text-xs font-bold border border-white/20 px-3 py-1.5 rounded-xl hover:bg-white/10 transition-colors">
-            עריכה
-          </button>
         </div>
       </div>
 
