@@ -381,18 +381,20 @@ export default function PostShipmentPage() {
                     </div>
                   </div>
                 ) : (
-                  {imageError && <p className="text-red-500 text-sm font-semibold mb-2 text-center">{imageError}</p>}
-                  <button
-                    onClick={() => fileInputRef.current?.click()}
-                    className="w-full flex items-center gap-4 rounded-2xl border-2 border-dashed border-zinc-200 bg-zinc-50 hover:border-primary hover:bg-primary/5 p-5 transition-all">
-                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 bg-white border border-zinc-200">
-                      <Camera className="w-6 h-6 text-zinc-400" />
-                    </div>
-                    <div className="text-right">
-                      <p className="font-black text-sm text-zinc-800">הוסף תמונה</p>
-                      <p className="text-xs text-zinc-400 mt-0.5">פריטים עם תמונה מקבלים 40% יותר הצעות</p>
-                    </div>
-                  </button>
+                  <>
+                    {imageError && <p className="text-red-500 text-sm font-semibold mb-2 text-center">{imageError}</p>}
+                    <button
+                      onClick={() => fileInputRef.current?.click()}
+                      className="w-full flex items-center gap-4 rounded-2xl border-2 border-dashed border-zinc-200 bg-zinc-50 hover:border-primary hover:bg-primary/5 p-5 transition-all">
+                      <div className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 bg-white border border-zinc-200">
+                        <Camera className="w-6 h-6 text-zinc-400" />
+                      </div>
+                      <div className="text-right">
+                        <p className="font-black text-sm text-zinc-800">הוסף תמונה</p>
+                        <p className="text-xs text-zinc-400 mt-0.5">פריטים עם תמונה מקבלים 40% יותר הצעות</p>
+                      </div>
+                    </button>
+                  </>
                 )}
               </div>
             )}
