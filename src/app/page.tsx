@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Package, Truck, BarChart3, Star, CheckCircle2 } from "lucide-react";
+import { Package, Truck, Star, CheckCircle2 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 
 type Review = { name: string; role: "sender" | "driver"; stars: number; text: string; date: string };
@@ -297,9 +297,6 @@ export default function LandingPage() {
           <div className="flex items-center gap-5 text-sm text-zinc-400">
             <Link href="/terms" className="hover:text-zinc-700 transition-colors">תקנון</Link>
             <Link href="/terms" className="hover:text-zinc-700 transition-colors">פרטיות</Link>
-            <Link href="/admin" className="flex items-center gap-1 hover:text-zinc-700 transition-colors">
-              <BarChart3 className="w-3.5 h-3.5" /> ניהול
-            </Link>
           </div>
           <p className="text-xs text-zinc-300">© 2025 On The Way</p>
         </div>
