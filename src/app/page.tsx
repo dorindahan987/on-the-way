@@ -69,7 +69,7 @@ export default function LandingPage() {
 
       {/* HEADER */}
       <header className="sticky top-0 z-50 bg-white border-b border-zinc-100">
-        <div className="max-w-4xl mx-auto px-5 h-14 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-5 h-14 flex items-center justify-between">
           <Link href="/">
             <Image src="/logo.svg" alt="On The Way" width={80} height={39} unoptimized />
           </Link>
@@ -88,13 +88,13 @@ export default function LandingPage() {
       </header>
 
       {/* HERO */}
-      <section className="max-w-4xl mx-auto px-5 py-14 sm:py-20">
+      <section className="max-w-6xl mx-auto px-5 py-14 sm:py-20">
         <h1 className="animate-fade-up text-4xl sm:text-5xl font-black text-zinc-900 leading-tight mb-4"
           style={{ animationDelay: "0.05s" }}>
           מכרזי הובלה.<br />
           <span style={{ color: "#4a6ffe" }}>אתם בוחרים את המחיר.</span>
         </h1>
-        <p className="animate-fade-up text-lg text-zinc-500 mb-8 max-w-lg"
+        <p className="animate-fade-up text-lg text-zinc-500 mb-8 max-w-xl"
           style={{ animationDelay: "0.15s" }}>
           פרסמו פריט בחינם, קבלו הצעות ממובילים, בחרו את הטוב ביותר.
           ללא עמלות. ללא מתווכים.
@@ -125,7 +125,7 @@ export default function LandingPage() {
 
       {/* HOW IT WORKS */}
       <section className="border-t border-zinc-100 bg-zinc-50">
-        <div className="max-w-4xl mx-auto px-5 py-12">
+        <div className="max-w-6xl mx-auto px-5 py-12">
           <h2 className="animate-fade-up font-black text-xl text-zinc-900 mb-8">איך זה עובד?</h2>
           <div className="grid sm:grid-cols-2 gap-6">
 
@@ -187,7 +187,7 @@ export default function LandingPage() {
       </section>
 
       {/* REVIEWS */}
-      <section id="reviews" className="max-w-4xl mx-auto px-5 py-14">
+      <section id="reviews" className="max-w-6xl mx-auto px-5 py-14">
         <div className="flex items-baseline justify-between mb-8">
           <h2 className="font-black text-xl text-zinc-900">ביקורות משתמשים</h2>
           <div className="flex items-center gap-1.5 text-sm text-zinc-500">
@@ -293,7 +293,7 @@ export default function LandingPage() {
 
       {/* FOOTER */}
       <footer className="border-t border-zinc-100 py-8 px-5">
-        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <Image src="/logo.svg" alt="On The Way" width={70} height={34} unoptimized />
           <div className="flex items-center gap-5 text-sm text-zinc-400">
             <Link href="/terms" className="hover:text-zinc-700 transition-colors">תקנון</Link>
