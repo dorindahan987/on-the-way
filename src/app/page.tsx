@@ -237,56 +237,55 @@ export default function LandingPage() {
         </div>
 
         {/* Write review form */}
-        <div className="border border-zinc-200 rounded-2xl p-6 max-w-lg mx-auto">
+        <div className="border border-zinc-200 rounded-2xl p-5" dir="rtl">
           {submitted ? (
             <div className="flex items-center gap-3">
               <CheckCircle2 className="w-5 h-5 shrink-0" style={{ color:"#4a6ffe" }} />
               <p className="font-bold text-zinc-900">תודה! הביקורת שלך התפרסמה.</p>
             </div>
           ) : (
-            <>
-              <p className="font-black text-zinc-900 mb-4">כתוב ביקורת</p>
-              <div className="space-y-3">
-                <div className="grid grid-cols-2 gap-3">
-                  <input type="text" placeholder="שם" value={form.name}
-                    onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                    className="h-10 border border-zinc-200 rounded-lg px-3 text-sm focus:outline-none focus:border-[#4a6ffe] transition-colors" dir="rtl" />
-                  <div className="flex gap-2">
-                    {(["sender","driver"] as const).map(role => (
-                      <button key={role} onClick={() => setForm(f => ({ ...f, role }))}
-                        className="flex-1 h-10 rounded-lg text-xs font-black border transition-all"
-                        style={form.role === role
-                          ? role === "sender" ? { background:"#c9f45a", borderColor:"#c9f45a", color:"#000" }
-                          : { background:"#4a6ffe", borderColor:"#4a6ffe", color:"#fff" }
-                          : { background:"white", borderColor:"#e5e7eb", color:"#9ca3af" }}>
-                        {role === "sender" ? "שולח" : "מוביל"}
-                      </button>
-                    ))}
-                  </div>
+            <div className="flex flex-col sm:flex-row gap-4 items-start">
+              {/* Right col — identity + stars */}
+              <div className="flex flex-col gap-3 sm:w-56 shrink-0">
+                <input type="text" placeholder="שם" value={form.name}
+                  onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                  className="h-10 border border-zinc-200 rounded-xl px-3 text-sm focus:outline-none focus:border-[#4a6ffe] transition-colors w-full" />
+                <div className="flex gap-2">
+                  {(["sender","driver"] as const).map(role => (
+                    <button key={role} onClick={() => setForm(f => ({ ...f, role }))}
+                      className="flex-1 h-9 rounded-xl text-xs font-black border transition-all"
+                      style={form.role === role
+                        ? role === "sender" ? { background:"#c9f45a", borderColor:"#c9f45a", color:"#000" }
+                        : { background:"#4a6ffe", borderColor:"#4a6ffe", color:"#fff" }
+                        : { background:"white", borderColor:"#e5e7eb", color:"#9ca3af" }}>
+                      {role === "sender" ? "שולח" : "מוביל"}
+                    </button>
+                  ))}
                 </div>
-
                 <div className="flex gap-1">
                   {[1,2,3,4,5].map(n => (
-                    <Star key={n} className="w-7 h-7 cursor-pointer transition-transform hover:scale-110"
+                    <Star key={n} className="w-6 h-6 cursor-pointer transition-transform hover:scale-110"
                       fill={n <= form.stars ? "#c9f45a" : "none"}
                       style={{ color: n <= form.stars ? "#c9f45a" : "#d1d5db" }}
                       onClick={() => setForm(f => ({ ...f, stars: n }))} />
                   ))}
                 </div>
+              </div>
 
+              {/* Left col — text + button */}
+              <div className="flex-1 flex flex-col gap-3 w-full">
                 <textarea placeholder="ספר על החוויה שלך..." value={form.text}
                   onChange={e => setForm(f => ({ ...f, text: e.target.value }))}
                   rows={3} dir="rtl"
-                  className="w-full border border-zinc-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-[#4a6ffe] transition-colors resize-none" />
-
+                  className="w-full border border-zinc-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-[#4a6ffe] transition-colors resize-none" />
                 <button onClick={submitReview}
                   disabled={!form.name.trim() || form.text.trim().length < 10}
-                  className="w-full h-10 font-black rounded-lg text-sm text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                  className="h-10 px-8 font-black rounded-xl text-sm text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all self-start"
                   style={{ background: "#4a6ffe" }}>
                   פרסם ביקורת
                 </button>
               </div>
-            </>
+            </div>
           )}
         </div>
       </section>

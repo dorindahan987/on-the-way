@@ -173,11 +173,11 @@
 .animate-step-in  { animation: step-in 0.3s ease both; }
 
 @keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-33.3333%); }
+  from { transform: translateX(-33.3333%); }
+  to   { transform: translateX(0); }
 }
 .animate-marquee {
-  animation: marquee 40s linear infinite;
+  animation: marquee 60s linear infinite;
   will-change: transform;
 }
 .marquee-wrap:hover .animate-marquee {
