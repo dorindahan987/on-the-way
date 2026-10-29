@@ -174,10 +174,10 @@
 
 @keyframes marquee {
   from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  to   { transform: translateX(-33.3333%); }
 }
 .animate-marquee {
-  animation: marquee 35s linear infinite;
+  animation: marquee 40s linear infinite;
   will-change: transform;
 }
 .marquee-wrap:hover .animate-marquee {
