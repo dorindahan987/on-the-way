@@ -14,7 +14,7 @@ export default function DriverLayout({ children }: { children: React.ReactNode }
   const pathname = usePathname();
 
   useEffect(() => {
-    if (!user) router.replace("/login");
+    if (!user) router.replace("/");
     else if (user.role !== "driver") router.replace("/sender");
   }, [user, router]);
 

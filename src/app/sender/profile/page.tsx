@@ -21,7 +21,7 @@ export default function SenderProfilePage() {
 
   const handleLogout = () => {
     logout();
-    router.replace("/login");
+    router.replace("/");
   };
 
   const MENU = [

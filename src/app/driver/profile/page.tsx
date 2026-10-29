@@ -17,7 +17,7 @@ export default function DriverProfilePage() {
 
   const handleLogout = () => {
     logout();
-    router.replace("/login");
+    router.replace("/");
   };
 
   const MENU = [

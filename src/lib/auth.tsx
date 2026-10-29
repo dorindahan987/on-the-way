@@ -66,7 +66,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       ...base,
       id: id?.trim() || base.id,
       name: name?.trim() || base.name,
-      phone: phone?.trim() || base.phone,
+      phone: phone?.trim() ?? "",
     };
     setUser(u);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(u));

@@ -19,10 +19,12 @@ export default function OnboardingPage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!user) { router.replace("/login"); return; }
-    // If phone already filled — skip onboarding
+    if (!user) { router.replace("/"); return; }
+    // If phone already filled — skip onboarding, respect returnTo
     if (user.phone && user.phone.length > 5) {
-      router.replace(user.role === "driver" ? "/driver" : "/sender");
+      const returnTo = localStorage.getItem("otw_return_to");
+      localStorage.removeItem("otw_return_to");
+      router.replace(returnTo ?? (user.role === "driver" ? "/driver" : "/sender"));
     }
   }, [user, router]);
 
@@ -49,7 +51,9 @@ export default function OnboardingPage() {
       ...(vehicleType ? { vehicle_type: vehicleType } : {}),
       ...(avatar ? { avatar } : {}),
     });
-    router.replace(user?.role === "driver" ? "/driver" : "/sender");
+    const returnTo = localStorage.getItem("otw_return_to");
+    localStorage.removeItem("otw_return_to");
+    router.replace(returnTo ?? (user?.role === "driver" ? "/driver" : "/sender"));
   };
 
   if (!user) return null;

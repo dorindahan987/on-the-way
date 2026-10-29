@@ -17,7 +17,7 @@ export default function AuthCallbackPage() {
     const finalize = (session: Session) => {
       const role = (localStorage.getItem("otw_pending_role") ?? "sender") as AuthRole;
       localStorage.removeItem("otw_pending_role");
-      localStorage.removeItem("otw_return_to");
+      // keep otw_return_to — onboarding will read and clear it
       const m = (session.user.user_metadata ?? {}) as Record<string, string>;
       const name = m.full_name ?? m.name ?? session.user.email ?? "משתמש";
       const stableId = session.user.id ?? session.user.email ?? "";
@@ -51,7 +51,7 @@ export default function AuthCallbackPage() {
                 localStorage.getItem("otw_return_to") ??
                 (role === "driver" ? "/driver" : "/sender");
               localStorage.removeItem("otw_pending_role");
-              localStorage.removeItem("otw_return_to");
+              // keep otw_return_to — onboarding will read and clear it
               login(role, name, undefined, stableId);
               router.replace("/onboarding");
               return;
