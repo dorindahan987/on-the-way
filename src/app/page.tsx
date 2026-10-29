@@ -206,23 +206,23 @@ export default function LandingPage() {
             style={{ background: "linear-gradient(to right, white, transparent)" }} />
           <div className="animate-marquee flex gap-4" dir="ltr" style={{ width: "max-content" }}>
             {[...reviews, ...reviews, ...reviews].map((r, i) => (
-              <div key={i} className="w-72 shrink-0 border border-zinc-100 rounded-2xl p-4 bg-white">
+              <div key={i} className="w-80 shrink-0 border border-zinc-100 rounded-2xl p-5 bg-white flex flex-col" style={{ minHeight: 180 }}>
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex gap-0.5">
                     {[1,2,3,4,5].map(n => (
-                      <Star key={n} className="w-3.5 h-3.5"
+                      <Star key={n} className="w-4 h-4"
                         fill={n <= r.stars ? "#c9f45a" : "none"}
                         style={{ color: n <= r.stars ? "#c9f45a" : "#e5e7eb" }} />
                     ))}
                   </div>
-                  <span className="text-[10px] font-black px-2 py-0.5 rounded-full"
+                  <span className="text-[10px] font-black px-2.5 py-1 rounded-full"
                     style={r.role === "sender" ? { background:"#c9f45a", color:"#000" } : { background:"#4a6ffe", color:"#fff" }}>
                     {r.role === "sender" ? "שולח" : "מוביל"}
                   </span>
                 </div>
-                <p className="text-sm text-zinc-600 leading-relaxed mb-3">{r.text}</p>
-                <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-black"
+                <p className="text-sm text-zinc-600 leading-relaxed flex-1 line-clamp-4 mb-4" dir="rtl">{r.text}</p>
+                <div className="flex items-center gap-2.5 pt-3 border-t border-zinc-50">
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-black shrink-0"
                     style={{ background:"#c9f45a", color:"#000" }}>
                     {r.name[0]}
                   </div>
@@ -237,7 +237,7 @@ export default function LandingPage() {
         </div>
 
         {/* Write review form */}
-        <div className="border border-zinc-200 rounded-2xl p-6 max-w-lg">
+        <div className="border border-zinc-200 rounded-2xl p-6 max-w-lg mx-auto">
           {submitted ? (
             <div className="flex items-center gap-3">
               <CheckCircle2 className="w-5 h-5 shrink-0" style={{ color:"#4a6ffe" }} />
